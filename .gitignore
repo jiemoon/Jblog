@@ -7,6 +7,7 @@
 Homestead.json
 Homestead.yaml
 .env
+.DS_Store
 
 # Laravel 4 specific
 bootstrap/compiled.php
