@@ -112,6 +112,7 @@
             this.currentPathName = this.$route.name;
             this.currentPathNameParent = this.$route.matched[0].name;
 
+            this.sysUserName = sessionStorage.getItem('username');
             var user = sessionStorage.getItem('user');
             if (user) {
                 user = JSON.parse(user);
