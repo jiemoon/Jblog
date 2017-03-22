@@ -61,8 +61,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    console.log(to);
-    console.log(from);
     NProgress.start();
     if (to.matched.some(r => r.meta.requireAuth)) {
         if (sessionStorage.getItem('token')) {

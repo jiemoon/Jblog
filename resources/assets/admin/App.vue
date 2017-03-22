@@ -9,8 +9,7 @@
     export default {
         watch: {
             '$route'(to, from) {//监听路由改变
-                let token = JSON.parse(sessionStorage.getItem('token'));
-                if (!token) {
+                if(! sessionStorage.getItem('token')) {
                     this.$router.replace('/login')
                 }
             }

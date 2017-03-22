@@ -35870,8 +35870,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     watch: {
         '$route': function $route(to, from) {
             //监听路由改变
-            var token = JSON.parse(sessionStorage.getItem('token'));
-            if (!token) {
+            if (!sessionStorage.getItem('token')) {
                 this.$router.replace('/login');
             }
         }
@@ -36327,8 +36326,6 @@ var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router___default.a({
 });
 
 router.beforeEach(function (to, from, next) {
-    console.log(to);
-    console.log(from);
     __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.start();
     if (to.matched.some(function (r) {
         return r.meta.requireAuth;
