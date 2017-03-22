@@ -60,9 +60,9 @@
                         sessionStorage.setItem('username', data.username);
                         this.$message.success('恭喜你，登录成功');
                         this.$router.push({ path: '/' });
-                    }else{
+                    } else {
                         this.$message.error(data.msg);
-                        sessionStorage.setItem('token', null)
+                        sessionStorage.removeItem('token');
                     }
                 });
             },

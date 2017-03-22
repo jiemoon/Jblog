@@ -25,20 +25,21 @@ axios.interceptors.response.use(
         return response;
     },
     error => {
-        if (error.response) {
-            switch (error.response.status) {
-                case 401:
-                    debugger;
-                    // 401 清除token信息并跳转到登录页面
-                    sessionStorage.setItem('token', null)
-                    router.replace({
-                        path: '/login',
-                        query: {redirect: router.currentRoute.fullPath}
-                    })
-            }
-        }
+        // if (error.response) {
+        //     switch (error.response.status) {
+        //         case 401:
+        //             // 401 清除token信息并跳转到登录页面
+        //             sessionStorage.setItem('token', null)
+        //             router.replace({
+        //                 path: '/login',
+        //                 query: {redirect: router.currentRoute.fullPath}
+        //             })
+        //     }
+        // }
         // console.log(JSON.stringify(error));//console : Error: Request failed with status code 402
-        return Promise.reject(error.response)
+        // console.log(Promise.reject(error.response));
+        // console.log(error.response);
+        return error.response;
     }
 );
 
