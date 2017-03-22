@@ -19,5 +19,7 @@ bootstrap/cache/
 .env.php
 .env
 
+yarn-error.log
+
 # Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
 .rocketeer/
