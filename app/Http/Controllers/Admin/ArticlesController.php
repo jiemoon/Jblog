@@ -16,14 +16,19 @@ class ArticlesController extends Controller
 
     public function store()
     {
-        /**$table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->string('title')->default('');
-            $table->string('slogan')->default('')->unique();
-            $table->text('content');
-            $table->index('slogan', 'idx_slogan');
-            $table->enum('status', ['draft', 'published']);
-        */
+        $this->validate(request(), [
+            'title' => 'required|unique:articles|max:255',
+            'slogan' => 'required|unique:articles|max:255',
+            'content' => 'required|min:100',
+        ], [
+            'title.required' => '标题不能为空',
+            'title.unique' => '标题已存在',
+            'title.max' => '标题长度不能超过255',
+            'slogan.required' => 'Slogan不能为空',
+            'slogan.max' => 'Slogan长度不能超过255',
+            'content.required' => '内容不能为空',
+            'content.min' => '内容不能小于100个字',
+        ]);
 
         Article::create([
             'user_id' => auth()->id(),

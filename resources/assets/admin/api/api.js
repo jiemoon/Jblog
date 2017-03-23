@@ -38,6 +38,8 @@ axios.interceptors.response.use(
                         path: '/login',
                         query: {redirect: router.currentRoute.fullPath}
                     })
+                case 422:
+                    return error.response;
             }
         }
         // console.log(JSON.stringify(error));//console : Error: Request failed with status code 402

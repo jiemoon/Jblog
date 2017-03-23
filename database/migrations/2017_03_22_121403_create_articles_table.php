@@ -21,6 +21,7 @@ class CreateArticlesTable extends Migration
             $table->text('content');
             $table->index('slogan', 'idx_slogan');
             $table->enum('status', ['draft', 'published']);
+            $table->time('publish_at');
             $table->timestamps();
         });
     }

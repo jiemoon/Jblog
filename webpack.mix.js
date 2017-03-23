@@ -12,6 +12,9 @@ const { mix } = require('laravel-mix');
  */
 
 mix.webpackConfig({
+    output: {
+        publicPath: '/'
+    },
     resolve:{
         alias: {
             'vue-router$': 'vue-router/dist/vue-router.common.js'
