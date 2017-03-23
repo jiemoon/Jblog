@@ -8,8 +8,6 @@ import router from './router';
 
 Vue.use(VueRouter)
 Vue.use(Element)
-// Vue.use(VueSimplemde)
-
 const app = new Vue({
     router: router,
     render: h => h(App)

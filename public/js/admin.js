@@ -976,8 +976,6 @@ __webpack_require__(167);
 
 Vue.use(VueRouter);
 Vue.use(__WEBPACK_IMPORTED_MODULE_2_element_ui___default.a);
-// Vue.use(VueSimplemde)
-
 var app = new Vue({
     router: __WEBPACK_IMPORTED_MODULE_4__router__["a" /* default */],
     render: function render(h) {
