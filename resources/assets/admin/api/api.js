@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from '../router'
 import Promise from 'promise';
 
 // axios 配置
@@ -25,27 +26,30 @@ axios.interceptors.response.use(
         return response;
     },
     error => {
-        // if (error.response) {
-        //     switch (error.response.status) {
-        //         case 401:
-        //             // 401 清除token信息并跳转到登录页面
-        //             sessionStorage.setItem('token', null)
-        //             router.replace({
-        //                 path: '/login',
-        //                 query: {redirect: router.currentRoute.fullPath}
-        //             })
-        //     }
-        // }
+        if (error.response) {
+            switch (error.response.status) {
+                case 401:
+                    // 401 清除token信息并跳转到登录页面
+                    sessionStorage.setItem('token', null)
+                    if(router.currentRoute.fullPath == '/login') {
+                        return error.response;
+                    }
+                    router.push({
+                        path: '/login',
+                        query: {redirect: router.currentRoute.fullPath}
+                    })
+            }
+        }
         // console.log(JSON.stringify(error));//console : Error: Request failed with status code 402
         // console.log(Promise.reject(error.response));
         // console.log(error.response);
-        return error.response;
+        return Promise.reject(error.response.data)
     }
 );
 
 export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
 
-export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); };
+export const getArticleList = params => { return axios.get(`${base}/articles`, { params: params }); };
 
 export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
 

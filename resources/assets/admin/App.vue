@@ -1,12 +1,14 @@
 <template>
     <div id="app">
-        <!-- <transition name="bounce"> -->
+        <transition name="fade"
+                    mode="out-in">
             <router-view></router-view>
-        <!-- </transition> -->
+        </transition>
     </div>
 </template>
 <script>
     export default {
+        name: 'app',
         watch: {
             '$route'(to, from) {//监听路由改变
                 if(! sessionStorage.getItem('token')) {
@@ -18,58 +20,39 @@
 </script>
 
 <style>
-.panel {
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  width: 100%;
+body {
+    margin:0px;
+    padding:0px;
+    font-family:Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+    font-size:14px;
+    -webkit-font-smoothing:antialiased
 }
-
-.panel-top {
-  height: 60px;
-  line-height: 60px;
-  background: #2392e2;
-  color: #FFFFFF;
+#app{
+    position:absolute;
+    top:0px;
+    bottom:0px;
+    width:100%
 }
-
-.panel-top .rightbar {
-  text-align: right;
-  padding-right: 35px;
+.el-submenu [class^=fa]{
+    vertical-align:baseline;
+    margin-right:10px
 }
-
-.panel-top .logo {
-    display: inline-block;
-    padding: 0 20px;
-    font-weight: bold;
-    font-size: 24px;
-    color: #324157;
+.el-menu-item [class^=fa]{
+    vertical-align:baseline;
+    margin-right:10px
 }
-
-.menu {
-    height: 100%;
-    border-radius: 0;
+.toolbar{
+    background:#f2f2f2;
+    padding:10px;
+    margin:10px 0px
 }
-
-.el-dropdown {
-    color: #FFFFFF;
+.toolbar .el-form-item{
+    margin-bottom:10px
 }
-
-.panel-center {
-  background: #324057;
-  position: absolute;
-  top: 60px;
-  bottom: 0px;
-  overflow: hidden;
+.fade-enter-active,.fade-leave-active{
+    transition:all .2s ease;
 }
-
-.panel-c-c {
-  background: #f1f2f7;
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
-  left: 180px;
-  overflow-y: scroll;
-  padding: 20px;
+.fade-enter,.fade-leave-active{
+    opacity:0;
 }
 </style>

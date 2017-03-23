@@ -18,3 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/admin/login', 'Admin\AuthController@login')->name('admin.login');
+Route::get('/admin/articles', 'Admin\ArticlesController@index')->middleware('jwt.auth');
+

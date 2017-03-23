@@ -54,6 +54,13 @@ const routes = [
         component: require('./views/Home'),
         children: [
             {
+                path: '/article/add',
+                name: '写文章',
+                iconCls: 'el-icon-edit',
+                component: require('./views/article/Add'),
+                meta: { requireAuth: true },
+            },
+            {
                 path: '/article',
                 name: '文章列表',
                 iconCls: 'el-icon-document',
@@ -62,6 +69,11 @@ const routes = [
             }
         ]
     },
+    {
+        path: '*',
+        hidden: true,
+        redirect: { path: '/404' }
+    }
 ];
 
 const router = new VueRouter({
