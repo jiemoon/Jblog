@@ -24,7 +24,7 @@
             </el-table-column>
             <el-table-column prop="title" label="标题" min-width="120" sortable>
             </el-table-column>
-            <el-table-column prop="solgan" label="solgan" width="100">
+            <el-table-column prop="slogan" label="slogan" min-width="100">
             </el-table-column>
             <el-table-column prop="status" label="状态" :formatter="formatStatus" width="100" sortable>
             </el-table-column>

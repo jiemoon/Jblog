@@ -66,6 +66,13 @@ const routes = [
                 iconCls: 'el-icon-document',
                 component: require('./views/article/List'),
                 meta: { requireAuth: true },
+            },
+            {
+                path: '/article/draft',
+                name: '草稿箱',
+                iconCls: 'el-icon-document',
+                component: require('./views/article/Draft'),
+                meta: { requireAuth: true },
             }
         ]
     },
