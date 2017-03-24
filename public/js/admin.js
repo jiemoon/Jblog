@@ -36937,9 +36937,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return false;
             }
 
-            // tips
-            var tips = "![Uploading " + fileList[0]['name'] + "...]()";
-            editor.replaceRange(tips, {
+            // placeholder
+            var placeholder = "![Uploading " + fileList[0]['name'] + "...]()";
+            editor.replaceRange(placeholder, {
                 line: editor.getCursor().line,
                 ch: editor.getCursor().ch
             });

@@ -1,6 +1,21 @@
 <?php
+// use GrahamCampbell\Markdown\Facades\Markdown;
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/posts', function() {
+    $articles = App\Models\Article::latest()->get();
+    return view('web.articles.index', compact('articles'));
+});
+Route::get('/{year}/{month}/{day}/{slug}', function($year, $month, $day, $slug) {
+    $article = App\Models\Article::where('slug', $slug)->first();
+    return view('web.articles.show', compact('article'));
+})->where(['year' => '[2][0][1][5-7]', 'month' => '[0-1][0-9]', 'day' => '[0-3][0-9]', 'name' => '[a-z]+']);
+Route::get('archives', function() {
+    $archives = [];
+    return view('web.articles.archive', compact('archives'));
 });
 
 // Route::group([

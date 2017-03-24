@@ -92,9 +92,9 @@
                     return false;
                 }
 
-                // tips
-                let tips = "![Uploading " + fileList[0]['name'] + "...]()"
-                editor.replaceRange(tips, {
+                // placeholder
+                let placeholder = "![Uploading " + fileList[0]['name'] + "...]()"
+                editor.replaceRange(placeholder, {
                     line: editor.getCursor().line,
                     ch: editor.getCursor().ch
                 });

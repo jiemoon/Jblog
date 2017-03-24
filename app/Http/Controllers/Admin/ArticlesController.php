@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use EasySlug\EasySlug\EasySlugFacade as EasySlug;
 
 class ArticlesController extends Controller
 {
@@ -27,10 +28,12 @@ class ArticlesController extends Controller
             'content.min' => '内容不能小于100个字',
         ]);
 
+        $slug = EasySlug::generateUniqueSlug(request('title'), 'articles', "slug");
+
         Article::create([
             'user_id' => auth()->id(),
             'title' => request('title'),
-            'slug' => request('slug'),
+            'slug' => $slug,
             'content' => request('content')
         ]);
 
