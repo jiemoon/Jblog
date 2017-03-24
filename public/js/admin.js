@@ -36876,9 +36876,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 
 // require.ensure([], () => require('github-markdown-css'), 'markdown-style')
@@ -36895,7 +36892,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             form: {
                 title: '',
-                slogan: '',
                 publish_date: '',
                 topics: [],
                 content: ''
@@ -36917,7 +36913,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
             rules: {
                 title: [{ required: true, message: '请输入标题', trigger: 'blur' }, { min: 3, max: 255, message: '长度在 3 到 255 个字', trigger: 'blur' }],
-                slogan: [{ required: true, message: '请输入Slogan', trigger: 'blur' }, { min: 3, max: 255, message: '长度在 3 到 255 个字', trigger: 'blur' }],
                 content: [{ required: true, message: '请写文章内容', trigger: 'blur' }, { min: 100, message: '最少要 100 个字', trigger: 'blur' }]
             }
         };
@@ -69922,19 +69917,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "Slogan",
-      "prop": "slogan"
-    }
-  }, [_c('el-input', {
-    model: {
-      value: (_vm.form.slogan),
-      callback: function($$v) {
-        _vm.form.slogan = $$v
-      },
-      expression: "form.slogan"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
       "label": "Topics"
     }
   }, [_c('el-checkbox-group', {
@@ -70111,8 +70093,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "prop": "slogan",
-      "label": "slogan",
+      "prop": "slug",
+      "label": "slug",
       "min-width": "100"
     }
   }), _vm._v(" "), _c('el-table-column', {

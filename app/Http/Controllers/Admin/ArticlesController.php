@@ -18,14 +18,11 @@ class ArticlesController extends Controller
     {
         $this->validate(request(), [
             'title' => 'required|unique:articles|max:255',
-            'slogan' => 'required|unique:articles|max:255',
             'content' => 'required|min:100',
         ], [
             'title.required' => '标题不能为空',
             'title.unique' => '标题已存在',
             'title.max' => '标题长度不能超过255',
-            'slogan.required' => 'Slogan不能为空',
-            'slogan.max' => 'Slogan长度不能超过255',
             'content.required' => '内容不能为空',
             'content.min' => '内容不能小于100个字',
         ]);
@@ -33,7 +30,7 @@ class ArticlesController extends Controller
         Article::create([
             'user_id' => auth()->id(),
             'title' => request('title'),
-            'slogan' => request('slogan'),
+            'slug' => request('slug'),
             'content' => request('content')
         ]);
 

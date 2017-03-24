@@ -3,9 +3,6 @@
         <el-form-item label="标题" prop="title">
             <el-input v-model="form.title"></el-input>
         </el-form-item>
-        <el-form-item label="Slogan" prop="slogan">
-            <el-input v-model="form.slogan"></el-input>
-        </el-form-item>
         <el-form-item label="Topics">
             <el-checkbox-group v-model="form.topics">
                 <el-checkbox label="Laravel" name="topics"></el-checkbox>
@@ -45,7 +42,6 @@
             return {
                 form: {
                     title: '',
-                    slogan: '',
                     publish_date: '',
                     topics: [],
                     content: '',
@@ -68,10 +64,6 @@
                 rules: {
                     title: [
                         { required: true, message: '请输入标题', trigger: 'blur' },
-                        { min: 3, max: 255, message: '长度在 3 到 255 个字', trigger: 'blur' }
-                    ],
-                    slogan: [
-                        { required: true, message: '请输入Slogan', trigger: 'blur' },
                         { min: 3, max: 255, message: '长度在 3 到 255 个字', trigger: 'blur' }
                     ],
                     content: [

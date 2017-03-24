@@ -1,95 +1,46 @@
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
+<html>
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>jiemoon.me</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
+        <link rel="short icon" href="/favicon.png">
+        <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
+            html,body,ul,li {margin: 0;padding: 0}
+            body { background: #fff; font-family: sans-serif,"Arial","Microsoft YaHei","黑体","宋体"; color: #333; line-height: 1; text-align: center; font-size: 1em; padding-top: 1em;    padding-top: 14%;}
+            h1 { margin: 0.8em 0; font-size: 2.4em; height: 1em; }
+            p.info {color: #999;margin-bottom: 3em;line-height: 20px;}
+            ul {list-style: none;}
+            ul li {height: 50px;display: inline-block;line-height: 50px;}
+            ul li a {text-decoration: none;color: #333;padding: 0 20px;}
+            footer {color: #ACACAC; margin: 3em;}
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
-        </div>
+        <h1>Hi, I'm jiemoon.</h1>
+        <p class="info">
+            A full stack web developer in Xiamen, China.
+        </p>
+        <ul>
+            <li>
+                <a href="https://blog.jiemoon.me">
+                    <i class="fa fa-yelp fa-2x"></i>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/jiemoon" target="_blank">
+                    <i class="fa fa-github fa-2x"></i>
+                </a>
+            </li>
+            <li>
+                <a href="http://weibo.com/u/2278746944" target="_blank">
+                    <i class="fa fa-weibo fa-2x"></i>
+                </a>
+            </li>
+        </ul>
+        <footer>
+            jiemoon.me &copy; 2015 - 2017
+        </footer>
     </body>
 </html>
