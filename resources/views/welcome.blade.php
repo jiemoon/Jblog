@@ -24,17 +24,17 @@
         </p>
         <ul>
             <li>
-                <a href="https://blog.jiemoon.me">
+                <a href="{{ config('blog.blog') }}">
                     <i class="fa fa-yelp fa-2x"></i>
                 </a>
             </li>
             <li>
-                <a href="https://github.com/jiemoon" target="_blank">
+                <a href="{{ config('blog.github') }}" target="_blank">
                     <i class="fa fa-github fa-2x"></i>
                 </a>
             </li>
             <li>
-                <a href="http://weibo.com/u/2278746944" target="_blank">
+                <a href="{{ config('blog.weibo') }}" target="_blank">
                     <i class="fa fa-weibo fa-2x"></i>
                 </a>
             </li>

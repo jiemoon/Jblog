@@ -22,7 +22,7 @@
 </head>
 <body>
     @include('web.particals.header')
-    <section class="content">
+    <section class="container">
         @yield('content')
     </section>
     @include('web.particals.footer')

@@ -1,7 +1,17 @@
 @extends('layouts.web')
 
 @section('content')
-
-    <div class="archive"><h2 class="archive-year">2016</h2><div class="post-item"><div class="post-time">Nov 15, 2016</div><a href="/2016/11/15/Deploy-Laravel-Project-Use-Mina/" class="post-title-link">使用 Mina 部署 Laravel 项目</a></div><div class="post-item"><div class="post-time">Nov 10, 2016</div><a href="/2016/11/10/Install-PHP-7-On-Centos/" class="post-title-link">在 Centos7 上安装 PHP7（多个 PHP 版本共存）</a></div><div class="post-item"><div class="post-time">Apr 3, 2016</div><a href="/2016/04/03/nginx-error-solution/" class="post-title-link">Nginx 常见错误解决方案</a></div><div class="post-item"><div class="post-time">Apr 1, 2016</div><a href="/2016/04/01/use-mina-in-php/" class="post-title-link">使用 Mina 来部署 PHP 项目</a></div><div class="post-item"><div class="post-time">Mar 13, 2016</div><a href="/2016/03/13/rails-note/" class="post-title-link">Rails 笔记</a></div><div class="post-item"><div class="post-time">Feb 20, 2016</div><a href="/2016/02/20/use-elasticsearch-in-rails/" class="post-title-link">Rails 中使用 ElasticSearch</a></div><div class="post-item"><div class="post-time">Feb 14, 2016</div><a href="/2016/02/14/elasticsearch-introduction/" class="post-title-link">ElasticSearch 入门</a></div><h2 class="archive-year">2015</h2><div class="post-item"><div class="post-time">Dec 31, 2015</div><a href="/2015/12/31/how-to-update-git-project-from-fork/" class="post-title-link">Git 日记：如何更新 fork 过来的项目</a></div><div class="post-item"><div class="post-time">Nov 14, 2015</div><a href="/2015/11/14/goaccess-analysis-nginx-access-log/" class="post-title-link">使用 GoAccess 分析 Nginx 访问日志</a></div><div class="post-item"><div class="post-time">Oct 14, 2015</div><a href="/2015/10/14/linux-server-memory-usage-analysis/" class="post-title-link">Linux 服务器内存使用分析</a></div></div>
-
+    <div class="archive">
+        @foreach ($archives as $year => $articles)
+            <h2 class="archive-year">{{ $year }}</h2>
+            @foreach ($articles as $article)
+                <div class="post-item">
+                    <div class="post-time">
+                        {{ generate_article_date($article->publish_at) }}
+                    </div>
+                    <a href="{{ generate_article_url($article) }}" class="post-title-link">{{ $article->title }}</a>
+                </div>
+            @endforeach
+        @endforeach
+    </div>
 @endsection
