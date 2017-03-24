@@ -31004,9 +31004,10 @@ module.exports = exports['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_promise__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_promise__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return requestLogin; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return addArticle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return requestLogin; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return addArticle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getArticleList; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return uploadImage; });
 /* unused harmony export getUserListPage */
 /* unused harmony export removeUser */
 /* unused harmony export editUser */
@@ -31067,6 +31068,10 @@ var addArticle = function addArticle(params) {
 
 var getArticleList = function getArticleList(params) {
     return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(base + '/articles', { params: params });
+};
+
+var uploadImage = function uploadImage(params) {
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(base + '/images/upload', params);
 };
 
 var getUserListPage = function getUserListPage(params) {
@@ -36780,7 +36785,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 email: this.ruleForm2.account,
                 password: this.ruleForm2.checkPass
             };
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["c" /* requestLogin */])(loginParams).then(function (data) {
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["d" /* requestLogin */])(loginParams).then(function (data) {
                 __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
 
                 if (data.success == true) {
@@ -36807,7 +36812,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         email: _this3.ruleForm2.account,
                         password: _this3.ruleForm2.checkPass
                     };
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["c" /* requestLogin */])(loginParams).then(function (data) {
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["d" /* requestLogin */])(loginParams).then(function (data) {
                         _this3.logining = false;
                         __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
                         var msg = data.msg,
@@ -36925,30 +36930,62 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.form.content = this.simplemde.value();
+        var _this = this;
+        this.simplemde.codemirror.on('drop', function (editor, e) {
+            var fileList = e.dataTransfer.files;
+            if (fileList.length > 1) {
+                _this.$message.error('一次只能上传一张图片');
+                return false;
+            }
+            if (fileList[0].type.indexOf('image') === -1) {
+                _this.$message.error("只能上传图片！");
+                return false;
+            }
+
+            // tips
+            var tips = "![Uploading " + fileList[0]['name'] + "...]()";
+            editor.replaceRange(tips, {
+                line: editor.getCursor().line,
+                ch: editor.getCursor().ch
+            });
+
+            var img = new FormData();
+            img.append('img', fileList[0]);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["b" /* uploadImage */])(img).then(function (res) {
+                if (res.data["status"] == "success") {
+                    editor.setValue(editor.getValue().replace(tips, "![](" + res.data['uri'] + ")"));
+                } else {
+                    _this.$message.error(res.data["message"]);
+                }
+            });
+        });
     },
 
     methods: {
-        onSubmit: function onSubmit() {
-            var _this = this;
+        handleSubmit: function handleSubmit() {
+            var _this2 = this;
 
             this.$refs.form.validate(function (valid) {
                 if (valid) {
-                    _this.loading_publish = true;
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["b" /* addArticle */])(_this.form).then(function (res) {
+                    _this2.loading_publish = true;
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["c" /* addArticle */])(_this2.form).then(function (res) {
                         if (res.data.status == 'OK') {
-                            _this.$message.success('发布成功');
-                            _this.simplemde.value('');
-                            _this.form = { title: '', slogan: '', publish_date: '', topics: [], content: '' };
+                            _this2.$message.success('发布成功');
+                            _this2.handleReset();
                         } else {
                             console.log(res);
-                            _this.$message.error('发布失败');
+                            _this2.$message.error('发布失败');
                         }
-                        _this.loading_publish = false;
+                        _this2.loading_publish = false;
                     });
                 } else {
                     return false;
                 }
             });
+        },
+        handleReset: function handleReset() {
+            this.simplemde.value('');
+            this.$refs.form.resetFields();
         }
     }
 };
@@ -69983,7 +70020,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "loading": _vm.loading_publish
     },
     on: {
-      "click": _vm.onSubmit
+      "click": _vm.handleSubmit
     }
   }, [_vm._v("立即发布")])], 1)], 1)
 },staticRenderFns: []}

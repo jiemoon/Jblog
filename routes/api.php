@@ -17,7 +17,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/admin/login', 'Admin\AuthController@login')->name('admin.login');
-Route::get('/admin/articles', 'Admin\ArticlesController@index')->middleware('jwt.auth');
-Route::post('/admin/articles', 'Admin\ArticlesController@store')->middleware('jwt.auth');
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
+    Route::post('/login', 'AuthController@login')->name('admin.login');
+
+    Route::group(['middleware' => 'jwt.auth'], function() {
+        Route::get('/articles', 'ArticlesController@index');
+        Route::post('/articles', 'ArticlesController@store');
+        Route::post('/images/upload', 'ImagesController@store');
+    });
+});
 

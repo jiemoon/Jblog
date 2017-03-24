@@ -24,7 +24,7 @@
         </el-form-item>
         <el-form-item style="text-align: right;">
             <el-button type="info">存为草稿</el-button>
-            <el-button type="primary" @click="onSubmit" :loading="loading_publish">立即发布</el-button>
+            <el-button type="primary" @click="handleSubmit" :loading="loading_publish">立即发布</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -35,7 +35,7 @@
     // 使用自定义编辑器主题时
     // import 'github-markdown-css'
 
-    import { addArticle } from '../../api/api';
+    import { addArticle, uploadImage } from '../../api/api';
 
     export default {
         components: {
@@ -88,17 +88,45 @@
         },
         mounted() {
             this.form.content = this.simplemde.value();
+            let _this = this;
+            this.simplemde.codemirror.on('drop', function (editor, e) {
+                var fileList = e.dataTransfer.files;
+                if (fileList.length > 1){
+                    _this.$message.error('一次只能上传一张图片');
+                    return false;
+                }
+                if(fileList[0].type.indexOf('image') === -1){
+                    _this.$message.error("只能上传图片！");
+                    return false;
+                }
+
+                // tips
+                let tips = "![Uploading " + fileList[0]['name'] + "...]()"
+                editor.replaceRange(tips, {
+                    line: editor.getCursor().line,
+                    ch: editor.getCursor().ch
+                });
+
+                var img = new FormData();
+                img.append('img', fileList[0]);
+                uploadImage(img).then((res) => {
+                    if (res.data["status"] == "success") {
+                        editor.setValue(editor.getValue().replace(tips, "![](" + res.data['uri'] + ")"));
+                    } else {
+                        _this.$message.error(res.data["message"]);
+                    }
+                })
+            });
         },
         methods: {
-            onSubmit() {
+            handleSubmit() {
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         this.loading_publish = true
                         addArticle(this.form).then((res) => {
                             if(res.data.status == 'OK') {
                                 this.$message.success('发布成功');
-                                this.simplemde.value('');
-                                this.form = {title: '', slogan: '', publish_date: '', topics: [], content: ''}
+                                this.handleReset();
                             } else {
                                 console.log(res);
                                 this.$message.error('发布失败');
@@ -109,7 +137,11 @@
                         return false;
                     }
                 });
-            }
+            },
+            handleReset() {
+                this.simplemde.value('');
+                this.$refs.form.resetFields();
+            },
         }
     }
 </script>
