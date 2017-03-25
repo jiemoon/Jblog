@@ -13,7 +13,7 @@
                 <div class="post-time">
                     {{ generate_article_date($article->publish_at) }}
                 </div>
-                <div class="post-content">Laravel 是个很有创造力的框架，它和 Mina 结合后是不是会更加强大？</div>
+                <div class="post-content">{{ $article->summary }}</div>
                 <a href="{{ generate_article_url($article) }}" class="read-more">...more</a>
             </article>
         </li>

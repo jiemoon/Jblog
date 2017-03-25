@@ -18,6 +18,7 @@ class CreateArticlesTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('title')->default('');
             $table->string('slug')->default('')->unique();
+            $table->string('summary');
             $table->text('content');
             $table->index('slug', 'idx_slug');
             $table->enum('status', ['draft', 'published']);

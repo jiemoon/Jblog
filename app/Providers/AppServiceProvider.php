@@ -13,7 +13,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // if ($this->app->environment() !== 'production') {
+        //     \DB::listen(function($sql, $bindings, $time) {
+        //         \Log::info('[SQL]'.$sql." with: ".join(',', $bindings));
+        //     });
+        // }
     }
 
     /**
@@ -23,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if ($this->app->environment() !== 'production') {
+            $this->app->register('Barryvdh\Debugbar\ServiceProvider');
+        }
     }
 }

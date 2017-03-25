@@ -3,7 +3,7 @@
         <el-form-item label="标题" prop="title">
             <el-input v-model="form.title"></el-input>
         </el-form-item>
-        <el-form-item label="Topics">
+        <el-form-item label="Topics" prop="topics">
             <el-checkbox-group v-model="form.topics">
                 <el-checkbox label="Laravel" name="topics"></el-checkbox>
                 <el-checkbox label="Vue" name="topics"></el-checkbox>
@@ -11,10 +11,11 @@
                 <el-checkbox label="Linux" name="topics"></el-checkbox>
             </el-checkbox-group>
         </el-form-item>
-        <el-form-item label="发布时间">
-            <el-col :span="11">
-                <el-date-picker type="date" placeholder="选择日期" v-model="form.publish_date" style="width: 100%;"></el-date-picker>
-            </el-col>
+        <el-form-item label="发布时间" prop="publish_at">
+            <el-date-picker type="date" format="yyyy-MM-dd" placeholder="选择日期" v-model="form.publish_at" ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="摘要" prop="summary">
+            <el-input type="textarea" v-model="form.summary"></el-input>
         </el-form-item>
         <el-form-item label="内容" class="theme" prop="content">
             <markdown-editor v-model="form.content" :configs="configs" ref="markdownEditor"></markdown-editor>
@@ -42,7 +43,7 @@
             return {
                 form: {
                     title: '',
-                    publish_date: '',
+                    publish_at: '',
                     topics: [],
                     content: '',
                 },
@@ -64,6 +65,10 @@
                 rules: {
                     title: [
                         { required: true, message: '请输入标题', trigger: 'blur' },
+                        { min: 3, max: 255, message: '长度在 3 到 255 个字', trigger: 'blur' }
+                    ],
+                    summary: [
+                        { required: true, message: '请输入摘要', trigger: 'blur' },
                         { min: 3, max: 255, message: '长度在 3 到 255 个字', trigger: 'blur' }
                     ],
                     content: [
@@ -131,8 +136,8 @@
                 });
             },
             handleReset() {
-                this.simplemde.value('');
                 this.$refs.form.resetFields();
+                this.simplemde.value('');
             },
         }
     }

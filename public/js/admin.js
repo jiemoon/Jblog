@@ -36876,6 +36876,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 // require.ensure([], () => require('github-markdown-css'), 'markdown-style')
@@ -36892,7 +36893,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             form: {
                 title: '',
-                publish_date: '',
+                publish_at: '',
                 topics: [],
                 content: ''
             },
@@ -36913,6 +36914,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
             rules: {
                 title: [{ required: true, message: '请输入标题', trigger: 'blur' }, { min: 3, max: 255, message: '长度在 3 到 255 个字', trigger: 'blur' }],
+                summary: [{ required: true, message: '请输入摘要', trigger: 'blur' }, { min: 3, max: 255, message: '长度在 3 到 255 个字', trigger: 'blur' }],
                 content: [{ required: true, message: '请写文章内容', trigger: 'blur' }, { min: 100, message: '最少要 100 个字', trigger: 'blur' }]
             }
         };
@@ -36979,8 +36981,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         handleReset: function handleReset() {
-            this.simplemde.value('');
             this.$refs.form.resetFields();
+            this.simplemde.value('');
         }
     }
 };
@@ -69917,7 +69919,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "Topics"
+      "label": "Topics",
+      "prop": "topics"
     }
   }, [_c('el-checkbox-group', {
     model: {
@@ -69949,28 +69952,39 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1)], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "发布时间"
-    }
-  }, [_c('el-col', {
-    attrs: {
-      "span": 11
+      "label": "发布时间",
+      "prop": "publish_at"
     }
   }, [_c('el-date-picker', {
-    staticStyle: {
-      "width": "100%"
-    },
     attrs: {
       "type": "date",
+      "format": "yyyy-MM-dd",
       "placeholder": "选择日期"
     },
     model: {
-      value: (_vm.form.publish_date),
+      value: (_vm.form.publish_at),
       callback: function($$v) {
-        _vm.form.publish_date = $$v
+        _vm.form.publish_at = $$v
       },
-      expression: "form.publish_date"
+      expression: "form.publish_at"
     }
-  })], 1)], 1), _vm._v(" "), _c('el-form-item', {
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "摘要",
+      "prop": "summary"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "textarea"
+    },
+    model: {
+      value: (_vm.form.summary),
+      callback: function($$v) {
+        _vm.form.summary = $$v
+      },
+      expression: "form.summary"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
     staticClass: "theme",
     attrs: {
       "label": "内容",
