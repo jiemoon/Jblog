@@ -16,6 +16,8 @@ class AuthController extends Controller{
             }
         }
         $credentials = $request->only('email', 'password');
+        \Config::set('jwt.user' , "App\Models\Admin");
+        \Config::set('auth.providers.users.model', \App\Models\Admin::class);
         if (! $token = JWTAuth::attempt($credentials)) {
             return response()->json(['success' => false, 'msg' => '用户名或密码错误'], 401);
         }

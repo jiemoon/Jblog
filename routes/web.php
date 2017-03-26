@@ -1,5 +1,4 @@
 <?php
-// use GrahamCampbell\Markdown\Facades\Markdown;
 
 Route::get('/', function () {
     return view('welcome');
