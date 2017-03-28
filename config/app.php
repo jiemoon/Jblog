@@ -170,6 +170,7 @@ return [
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         EasySlug\EasySlug\EasySlugServiceProvider::class,
         GrahamCampbell\Markdown\MarkdownServiceProvider::class,
+        Overtrue\LaravelFilesystem\Qiniu\QiniuStorageServiceProvider::class,
 
         /*
          * Application Service Providers...

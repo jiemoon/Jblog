@@ -36950,7 +36950,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             img.append('img', fileList[0]);
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["b" /* uploadImage */])(img).then(function (res) {
                 if (res.data["status"] == "success") {
-                    editor.setValue(editor.getValue().replace(tips, "![](" + res.data['uri'] + ")"));
+                    editor.setValue(editor.getValue().replace(placeholder, "![](" + res.data['uri'] + ")"));
                 } else {
                     _this.$message.error(res.data["message"]);
                 }

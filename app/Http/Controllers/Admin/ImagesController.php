@@ -24,14 +24,14 @@ class ImagesController extends Controller
             };
 
             $image->mime_type = $file->getMimeType();
-            $image->path = $file->store('/upload/images');
+            $image->path = $file->store('/upload/images', 'qiniu');
             $image->width = '';
             $image->height = '';
 
             $image->save();
             return response()->json([
                 'status' => 'success',
-                'uri' => url('/') . '/' . $image->path
+                'uri' => env('QINIU_DOMAIN') . '/' . $image->path
             ]);
         }
         return response()->json([

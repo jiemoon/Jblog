@@ -108,7 +108,7 @@
                 img.append('img', fileList[0]);
                 uploadImage(img).then((res) => {
                     if (res.data["status"] == "success") {
-                        editor.setValue(editor.getValue().replace(tips, "![](" + res.data['uri'] + ")"));
+                        editor.setValue(editor.getValue().replace(placeholder, "![](" + res.data['uri'] + ")"));
                     } else {
                         _this.$message.error(res.data["message"]);
                     }
