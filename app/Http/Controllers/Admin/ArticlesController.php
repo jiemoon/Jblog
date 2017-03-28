@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Article;
 use EasySlug\EasySlug\EasySlugFacade as EasySlug;
+use App\Models\Article;
+use App\Models\Tag;
 
 class ArticlesController extends Controller
 {
@@ -37,7 +38,7 @@ class ArticlesController extends Controller
             $publish_at = date('Y-m-d H:i:s',  strtotime($publish_at));
         }
 
-        Article::create([
+        $article = Article::create([
             'user_id' => auth()->id(),
             'title' => request('title'),
             'slug' => $slug,
@@ -46,6 +47,25 @@ class ArticlesController extends Controller
             'content' => request('content')
         ]);
 
+        $tags = $this->normalizeTag(request('tags'));
+        $article->tags()->attach($tags);
+
         return response()->json(['status' => 'OK']);
+    }
+
+    private function normalizeTag(array $tags) {
+        return collect($tags)->map(function($tag) {
+            if(is_integer($tag)) {
+                if (!is_null(Tag::find($tag))) {
+                    Tag::find($tag)->increment('article_count');
+                    return $tag;
+                }
+            }
+
+            $new_tag = Tag::firstOrCreate(['name' => $tag]);
+            $new_tag->article_count ++;
+            $new_tag->save();
+            return $new_tag->id;
+        })->toArray();
     }
 }

@@ -57,6 +57,8 @@ export const getArticleList = params => { return axios.get(`${base}/articles`, {
 
 export const uploadImage = params => { return axios.post(`${base}/images/upload`, params); };
 
+export const getTagList = params => { return axios.get(`${base}/tags`, { params: params }); };
+
 export const getUserListPage = params => { return axios.get(`${base}/user/listpage`, { params: params }); };
 
 export const removeUser = params => { return axios.get(`${base}/user/remove`, { params: params }); };

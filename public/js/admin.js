@@ -31004,10 +31004,11 @@ module.exports = exports['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_promise__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_promise__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return requestLogin; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return addArticle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return requestLogin; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return addArticle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getArticleList; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return uploadImage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getTagList; });
 /* unused harmony export getUserListPage */
 /* unused harmony export removeUser */
 /* unused harmony export editUser */
@@ -31072,6 +31073,10 @@ var getArticleList = function getArticleList(params) {
 
 var uploadImage = function uploadImage(params) {
     return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(base + '/images/upload', params);
+};
+
+var getTagList = function getTagList(params) {
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(base + '/tags', { params: params });
 };
 
 var getUserListPage = function getUserListPage(params) {
@@ -36785,7 +36790,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 email: this.ruleForm2.account,
                 password: this.ruleForm2.checkPass
             };
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["d" /* requestLogin */])(loginParams).then(function (data) {
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["e" /* requestLogin */])(loginParams).then(function (data) {
                 __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
 
                 if (data.success == true) {
@@ -36812,7 +36817,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         email: _this3.ruleForm2.account,
                         password: _this3.ruleForm2.checkPass
                     };
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["d" /* requestLogin */])(loginParams).then(function (data) {
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["e" /* requestLogin */])(loginParams).then(function (data) {
                         _this3.logining = false;
                         __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
                         var msg = data.msg,
@@ -36874,9 +36879,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 
 // require.ensure([], () => require('github-markdown-css'), 'markdown-style')
@@ -36891,12 +36893,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
+            tags: [],
             form: {
                 title: '',
                 publish_at: '',
-                topics: [],
+                tags: [],
                 content: ''
             },
+            loading_serach: false,
             loading_publish: false,
             configs: { // markdownEditor Config
                 autoDownloadFontAwesome: false,
@@ -36926,6 +36930,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted: function mounted() {
+        var _this2 = this;
+
         this.form.content = this.simplemde.value();
         var _this = this;
         this.simplemde.codemirror.on('drop', function (editor, e) {
@@ -36956,24 +36962,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             });
         });
+
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["c" /* getTagList */])().then(function (res) {
+            _this2.tags = res.data;
+        });
     },
 
     methods: {
         handleSubmit: function handleSubmit() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.$refs.form.validate(function (valid) {
                 if (valid) {
-                    _this2.loading_publish = true;
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["c" /* addArticle */])(_this2.form).then(function (res) {
+                    _this3.loading_publish = true;
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["d" /* addArticle */])(_this3.form).then(function (res) {
                         if (res.data.status == 'OK') {
-                            _this2.$message.success('发布成功');
-                            _this2.handleReset();
+                            _this3.$message.success('发布成功');
+                            _this3.handleReset();
                         } else {
                             console.log(res);
-                            _this2.$message.error('发布失败');
+                            _this3.$message.error('发布失败');
                         }
-                        _this2.loading_publish = false;
+                        _this3.loading_publish = false;
                     });
                 } else {
                     return false;
@@ -37184,7 +37194,7 @@ exports.push([module.i, "\n.page-container[data-v-1913f474] {\n  font-size: 20px
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)();
-exports.push([module.i, "\n.theme .editor-preview-side pre,.theme .editor-preview pre {\n    color: #abb2bf!important;\n    background: #23241f!important;\n    padding: 0.5em;\n}\n.editor-toolbar a, .editor-toolbar a.active, .editor-toolbar a:hover {\n    outline: none;\n}\na {\n　　-webkit-tap-highlight-color: rgba(0,0,0,0);\n　　-webkit-tap-highlight-color: transparent;\n　　outline: none;\n}\n", ""]);
+exports.push([module.i, "\n.theme .editor-preview-side pre,.theme .editor-preview pre {\n    color: #abb2bf!important;\n    background: #23241f!important;\n    padding: 0.5em;\n}\n.editor-toolbar a, .editor-toolbar a.active, .editor-toolbar a:hover {\n    outline: none;\n}\n.markdown-editor .CodeMirror {\n    z-index: 10001;\n}\na {\n　　-webkit-tap-highlight-color: rgba(0,0,0,0);\n　　-webkit-tap-highlight-color: transparent;\n　　outline: none;\n}\n.el-select__tags {\n    width: 100%;\n}\n", ""]);
 
 /***/ }),
 /* 106 */
@@ -69919,38 +69929,34 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "Topics",
-      "prop": "topics"
+      "label": "标签",
+      "prop": "tags"
     }
-  }, [_c('el-checkbox-group', {
+  }, [_c('el-select', {
+    staticStyle: {
+      "width": "100%"
+    },
+    attrs: {
+      "multiple": "",
+      "filterable": "",
+      "allow-create": "",
+      "placeholder": "请选择文章标签"
+    },
     model: {
-      value: (_vm.form.topics),
+      value: (_vm.form.tags),
       callback: function($$v) {
-        _vm.form.topics = $$v
+        _vm.form.tags = $$v
       },
-      expression: "form.topics"
+      expression: "form.tags"
     }
-  }, [_c('el-checkbox', {
-    attrs: {
-      "label": "Laravel",
-      "name": "topics"
-    }
-  }), _vm._v(" "), _c('el-checkbox', {
-    attrs: {
-      "label": "Vue",
-      "name": "topics"
-    }
-  }), _vm._v(" "), _c('el-checkbox', {
-    attrs: {
-      "label": "PHP",
-      "name": "topics"
-    }
-  }), _vm._v(" "), _c('el-checkbox', {
-    attrs: {
-      "label": "Linux",
-      "name": "topics"
-    }
-  })], 1)], 1), _vm._v(" "), _c('el-form-item', {
+  }, _vm._l((_vm.tags), function(item) {
+    return _c('el-option', {
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
       "label": "发布时间",
       "prop": "publish_at"

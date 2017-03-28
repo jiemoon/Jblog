@@ -3,13 +3,10 @@
         <el-form-item label="标题" prop="title">
             <el-input v-model="form.title"></el-input>
         </el-form-item>
-        <el-form-item label="Topics" prop="topics">
-            <el-checkbox-group v-model="form.topics">
-                <el-checkbox label="Laravel" name="topics"></el-checkbox>
-                <el-checkbox label="Vue" name="topics"></el-checkbox>
-                <el-checkbox label="PHP" name="topics"></el-checkbox>
-                <el-checkbox label="Linux" name="topics"></el-checkbox>
-            </el-checkbox-group>
+        <el-form-item label="标签" prop="tags">
+            <el-select v-model="form.tags" style="width:100%" multiple filterable allow-create placeholder="请选择文章标签">
+                <el-option v-for="item in tags" :label="item.name" :value="item.id"></el-option>
+            </el-select>
         </el-form-item>
         <el-form-item label="发布时间" prop="publish_at">
             <el-date-picker type="date" format="yyyy-MM-dd" placeholder="选择日期" v-model="form.publish_at" ></el-date-picker>
@@ -33,7 +30,7 @@
     // 使用自定义编辑器主题时
     // import 'github-markdown-css'
 
-    import { addArticle, uploadImage } from '../../api/api';
+    import { addArticle, uploadImage, getTagList } from '../../api/api';
 
     export default {
         components: {
@@ -41,12 +38,14 @@
         },
         data() {
             return {
+                tags: [],
                 form: {
                     title: '',
                     publish_at: '',
-                    topics: [],
+                    tags: [],
                     content: '',
                 },
+                loading_serach: false,
                 loading_publish: false,
                 configs: { // markdownEditor Config
                     autoDownloadFontAwesome: false,
@@ -114,6 +113,10 @@
                     }
                 })
             });
+
+            getTagList().then((res) => {
+                this.tags = res.data;
+            })
         },
         methods: {
             handleSubmit() {
@@ -153,9 +156,17 @@
         outline: none;
     }
 
+    .markdown-editor .CodeMirror {
+        z-index: 10001;
+    }
+
     a {
     　　-webkit-tap-highlight-color: rgba(0,0,0,0);
     　　-webkit-tap-highlight-color: transparent;
     　　outline: none;
+    }
+
+    .el-select__tags {
+        width: 100%;
     }
 </style>

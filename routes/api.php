@@ -24,6 +24,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
         Route::get('/articles', 'ArticlesController@index');
         Route::post('/articles', 'ArticlesController@store');
         Route::post('/images/upload', 'ImagesController@store');
+        Route::get('/tags', 'TagsController@index');
     });
 });
+
 
