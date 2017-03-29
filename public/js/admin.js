@@ -31004,13 +31004,12 @@ module.exports = exports['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_promise__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_promise__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return requestLogin; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return addArticle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return requestLogin; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return addArticle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getArticleList; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return uploadImage; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getTagList; });
-/* unused harmony export getUserListPage */
-/* unused harmony export removeUser */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return uploadImage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getTagList; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return deleteArticle; });
 /* unused harmony export editUser */
 
 
@@ -31079,12 +31078,8 @@ var getTagList = function getTagList(params) {
     return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(base + '/tags', { params: params });
 };
 
-var getUserListPage = function getUserListPage(params) {
-    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(base + '/user/listpage', { params: params });
-};
-
-var removeUser = function removeUser(params) {
-    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(base + '/user/remove', { params: params });
+var deleteArticle = function deleteArticle(params) {
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.delete(base + '/articles', { params: params });
 };
 
 var editUser = function editUser(params) {
@@ -36790,7 +36785,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 email: this.ruleForm2.account,
                 password: this.ruleForm2.checkPass
             };
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["e" /* requestLogin */])(loginParams).then(function (data) {
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["f" /* requestLogin */])(loginParams).then(function (data) {
                 __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
 
                 if (data.success == true) {
@@ -36817,7 +36812,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         email: _this3.ruleForm2.account,
                         password: _this3.ruleForm2.checkPass
                     };
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["e" /* requestLogin */])(loginParams).then(function (data) {
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["f" /* requestLogin */])(loginParams).then(function (data) {
                         _this3.logining = false;
                         __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
                         var msg = data.msg,
@@ -36954,7 +36949,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var img = new FormData();
             img.append('img', fileList[0]);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["b" /* uploadImage */])(img).then(function (res) {
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["c" /* uploadImage */])(img).then(function (res) {
                 if (res.data["status"] == "success") {
                     editor.setValue(editor.getValue().replace(placeholder, "![](" + res.data['uri'] + ")"));
                 } else {
@@ -36963,7 +36958,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         });
 
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["c" /* getTagList */])().then(function (res) {
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["d" /* getTagList */])().then(function (res) {
             _this2.tags = res.data;
         });
     },
@@ -36975,7 +36970,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$refs.form.validate(function (valid) {
                 if (valid) {
                     _this3.loading_publish = true;
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["d" /* addArticle */])(_this3.form).then(function (res) {
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["e" /* addArticle */])(_this3.form).then(function (res) {
                         if (res.data.status == 'OK') {
                             _this3.$message.success('发布成功');
                             _this3.handleReset();
@@ -37059,6 +37054,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
@@ -37070,6 +37090,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             total: 0,
             filters: {
                 title: ''
+            },
+            editFormVisible: false, //编辑界面是否显示
+            editLoading: false,
+            editFormRules: {
+                name: [{ required: true, message: '请输入姓名', trigger: 'blur' }]
+            },
+            //编辑界面数据
+            editForm: {
+                id: 0,
+                name: '',
+                sex: -1,
+                age: 0,
+                birth: '',
+                addr: ''
             }
         };
     },
@@ -37095,10 +37129,86 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.listLoading = false;
             });
         },
-        handleEdit: function handleEdit() {},
+
+        //显示编辑界面
+        handleEdit: function handleEdit(index, row) {
+            this.editFormVisible = true;
+            this.editForm = Object.assign({}, row);
+        },
+        //编辑
+        editSubmit: function editSubmit() {
+            var _this2 = this;
+
+            this.$refs.editForm.validate(function (valid) {
+                if (valid) {
+                    _this2.$confirm('确认提交吗？', '提示', {}).then(function () {
+                        _this2.editLoading = true;
+                        //NProgress.start();
+                        var para = Object.assign({}, _this2.editForm);
+                        para.birth = !para.birth || para.birth == '' ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
+                        editUser(para).then(function (res) {
+                            _this2.editLoading = false;
+                            //NProgress.done();
+                            _this2.$message({
+                                message: '提交成功',
+                                type: 'success'
+                            });
+                            _this2.$refs['editForm'].resetFields();
+                            _this2.editFormVisible = false;
+                            _this2.getUsers();
+                        });
+                    });
+                }
+            });
+        },
         handleAdd: function handleAdd() {},
-        handleDel: function handleDel() {},
-        selsChange: function selsChange() {}
+
+        //删除
+        handleDel: function handleDel(index, row) {
+            var _this3 = this;
+
+            this.$confirm('确认删除该记录吗?', '提示', {
+                type: 'warning'
+            }).then(function () {
+                _this3.listLoading = true;
+                //NProgress.start();
+                var para = { id: row.id };
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["b" /* deleteArticle */])(para).then(function (res) {
+                    _this3.listLoading = false;
+                    //NProgress.done();
+                    _this3.$message({
+                        message: '删除成功',
+                        type: 'success'
+                    });
+                    _this3.getArticles();
+                });
+            }).catch(function () {});
+        },
+        selsChange: function selsChange() {},
+
+        batchRemove: function batchRemove() {
+            var _this4 = this;
+
+            var ids = this.sels.map(function (item) {
+                return item.id;
+            }).toString();
+            this.$confirm('确认删除选中记录吗？', '提示', {
+                type: 'warning'
+            }).then(function () {
+                _this4.listLoading = true;
+                //NProgress.start();
+                var para = { ids: ids };
+                batchRemoveUser(para).then(function (res) {
+                    _this4.listLoading = false;
+                    //NProgress.done();
+                    _this4.$message({
+                        message: '删除成功',
+                        type: 'success'
+                    });
+                    _this4.getUsers();
+                });
+            }).catch(function () {});
+        }
     },
     mounted: function mounted() {
         this.getArticles();
@@ -37194,7 +37304,7 @@ exports.push([module.i, "\n.page-container[data-v-1913f474] {\n  font-size: 20px
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)();
-exports.push([module.i, "\n.theme .editor-preview-side pre,.theme .editor-preview pre {\n    color: #abb2bf!important;\n    background: #23241f!important;\n    padding: 0.5em;\n}\n.editor-toolbar a, .editor-toolbar a.active, .editor-toolbar a:hover {\n    outline: none;\n}\n.markdown-editor .CodeMirror {\n    z-index: 10001;\n}\na {\n　　-webkit-tap-highlight-color: rgba(0,0,0,0);\n　　-webkit-tap-highlight-color: transparent;\n　　outline: none;\n}\n.el-select__tags {\n    width: 100%;\n}\n", ""]);
+exports.push([module.i, "\n.theme .editor-preview-side pre,.theme .editor-preview pre {\n    color: #abb2bf!important;\n    background: #23241f!important;\n    padding: 0.5em;\n}\n.editor-toolbar a, .editor-toolbar a.active, .editor-toolbar a:hover {\n    outline: none;\n}\n.markdown-editor .CodeMirror {\n    z-index: 1001;\n}\na {\n　　-webkit-tap-highlight-color: rgba(0,0,0,0);\n　　-webkit-tap-highlight-color: transparent;\n　　outline: none;\n}\n.el-select__tags {\n    width: 100%;\n}\n", ""]);
 
 /***/ }),
 /* 106 */
@@ -70070,14 +70180,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.getArticles
     }
-  }, [_vm._v("查询")])], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
-    attrs: {
-      "type": "primary"
-    },
-    on: {
-      "click": _vm.handleAdd
-    }
-  }, [_vm._v("新增")])], 1)], 1)], 1), _vm._v(" "), _c('el-table', {
+  }, [_vm._v("查询")])], 1)], 1)], 1), _vm._v(" "), _c('el-table', {
     directives: [{
       name: "loading",
       rawName: "v-loading",
@@ -70160,7 +70263,130 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }, [_vm._v("删除")])]
       }]
     ])
-  })], 1)], 1)
+  })], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "编辑",
+      "close-on-click-modal": false
+    },
+    model: {
+      value: (_vm.editFormVisible),
+      callback: function($$v) {
+        _vm.editFormVisible = $$v
+      },
+      expression: "editFormVisible"
+    }
+  }, [_c('el-form', {
+    ref: "editForm",
+    attrs: {
+      "model": _vm.editForm,
+      "label-width": "80px",
+      "rules": _vm.editFormRules
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "姓名",
+      "prop": "name"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "auto-complete": "off"
+    },
+    model: {
+      value: (_vm.editForm.name),
+      callback: function($$v) {
+        _vm.editForm.name = $$v
+      },
+      expression: "editForm.name"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "性别"
+    }
+  }, [_c('el-radio-group', {
+    model: {
+      value: (_vm.editForm.sex),
+      callback: function($$v) {
+        _vm.editForm.sex = $$v
+      },
+      expression: "editForm.sex"
+    }
+  }, [_c('el-radio', {
+    staticClass: "radio",
+    attrs: {
+      "label": 1
+    }
+  }, [_vm._v("男")]), _vm._v(" "), _c('el-radio', {
+    staticClass: "radio",
+    attrs: {
+      "label": 0
+    }
+  }, [_vm._v("女")])], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "年龄"
+    }
+  }, [_c('el-input-number', {
+    attrs: {
+      "min": 0,
+      "max": 200
+    },
+    model: {
+      value: (_vm.editForm.age),
+      callback: function($$v) {
+        _vm.editForm.age = $$v
+      },
+      expression: "editForm.age"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "生日"
+    }
+  }, [_c('el-date-picker', {
+    attrs: {
+      "type": "date",
+      "placeholder": "选择日期"
+    },
+    model: {
+      value: (_vm.editForm.birth),
+      callback: function($$v) {
+        _vm.editForm.birth = $$v
+      },
+      expression: "editForm.birth"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "地址"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "textarea"
+    },
+    model: {
+      value: (_vm.editForm.addr),
+      callback: function($$v) {
+        _vm.editForm.addr = $$v
+      },
+      expression: "editForm.addr"
+    }
+  })], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    slot: "footer"
+  }, [_c('el-button', {
+    nativeOn: {
+      "click": function($event) {
+        _vm.editFormVisible = false
+      }
+    }
+  }, [_vm._v("取消")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary",
+      "loading": _vm.editLoading
+    },
+    nativeOn: {
+      "click": function($event) {
+        _vm.editSubmit($event)
+      }
+    }
+  }, [_vm._v("提交")])], 1)], 1)], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

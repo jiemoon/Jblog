@@ -157,7 +157,7 @@
     }
 
     .markdown-editor .CodeMirror {
-        z-index: 10001;
+        z-index: 1001;
     }
 
     a {

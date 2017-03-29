@@ -10,9 +10,14 @@ use App\Models\Tag;
 
 class ArticlesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::latest()->paginate(15)->toArray();
+        $title = $request->get('title');
+        $query = Article::latest();
+        if(!empty($title)) {
+            $query->where('title', 'like', '%'.$title.'%');
+        }
+        $articles = $query->paginate(15)->toArray();
         return response()->json($articles);
     }
 
@@ -34,8 +39,10 @@ class ArticlesController extends Controller
 
         $slug = EasySlug::generateUniqueSlug(request('title'), 'articles', "slug");
         $publish_at = request('publish_at');
+        $status = 'draft';
         if (isset($publish_at)) {
             $publish_at = date('Y-m-d H:i:s',  strtotime($publish_at));
+            $status = 'published';
         }
 
         $article = Article::create([
@@ -43,6 +50,7 @@ class ArticlesController extends Controller
             'title' => request('title'),
             'slug' => $slug,
             'publish_at' => $publish_at,
+            'status' => $status,
             'summary' => request('summary'),
             'content' => request('content')
         ]);
@@ -67,5 +75,12 @@ class ArticlesController extends Controller
             $new_tag->save();
             return $new_tag->id;
         })->toArray();
+    }
+
+    public function destroy(Request $request)
+    {
+        $article = Article::find($request->get('id'));
+        $article->delete();
+        return response()->json(['status' => 'OK']);
     }
 }

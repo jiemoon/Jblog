@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-    protected $fillable = ['user_id', 'title', 'content', 'slug', 'summary', 'publish_at'];
+    protected $fillable = ['user_id', 'title', 'content', 'slug', 'summary', 'publish_at', 'status'];
 
     public function tags()
     {

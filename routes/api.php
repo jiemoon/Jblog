@@ -23,6 +23,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
     Route::group(['middleware' => 'jwt.auth.admin'], function() {
         Route::get('/articles', 'ArticlesController@index');
         Route::post('/articles', 'ArticlesController@store');
+        Route::delete('/articles', 'ArticlesController@destroy');
         Route::post('/images/upload', 'ImagesController@store');
         Route::get('/tags', 'TagsController@index');
     });
