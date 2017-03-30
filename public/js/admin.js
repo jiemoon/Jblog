@@ -37161,7 +37161,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["b" /* editArticle */])(row.id).then(function (res) {
                 _this2.editFormVisible = true;
-                console.log(res);
                 _this2.editForm = {
                     id: res.data.id,
                     title: res.data.title,

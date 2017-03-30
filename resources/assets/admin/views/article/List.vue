@@ -135,7 +135,6 @@
             handleEdit: function (index, row) {
                 editArticle(row.id).then((res) => {
                     this.editFormVisible = true;
-                    console.log(res);
                     this.editForm = {
                         id: res.data.id,
                         title: res.data.title,
