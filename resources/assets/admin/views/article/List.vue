@@ -38,23 +38,22 @@
         <!--编辑界面-->
         <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
             <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-                <el-form-item label="姓名" prop="name">
-                    <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                <el-form-item label="标题" prop="title">
+                    <el-input v-model="editForm.title"></el-input>
                 </el-form-item>
-                <el-form-item label="性别">
-                    <el-radio-group v-model="editForm.sex">
-                        <el-radio class="radio" :label="1">男</el-radio>
-                        <el-radio class="radio" :label="0">女</el-radio>
-                    </el-radio-group>
+                <el-form-item label="标签" prop="tags">
+                    <el-select v-model="editForm.tags" style="width:100%" multiple filterable allow-create placeholder="请选择文章标签">
+                        <el-option v-for="item in editForm.tags" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="年龄">
-                    <el-input-number v-model="editForm.age" :min="0" :max="200"></el-input-number>
+                <el-form-item label="发布时间" prop="publish_at">
+                    <el-date-picker type="date" format="yyyy-MM-dd" placeholder="选择日期" v-model="editForm.publish_at" ></el-date-picker>
                 </el-form-item>
-                <el-form-item label="生日">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="editForm.birth"></el-date-picker>
+                <el-form-item label="摘要" prop="summary">
+                    <el-input type="textarea" v-model="editForm.summary"></el-input>
                 </el-form-item>
-                <el-form-item label="地址">
-                    <el-input type="textarea" v-model="editForm.addr"></el-input>
+                <el-form-item label="内容" class="theme" prop="content">
+                    <markdown-editor v-model="editForm.content" :configs="configs" ref="markdownEditor"></markdown-editor>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -66,8 +65,12 @@
 </template>
 
 <script>
-    import { getArticleList, deleteArticle } from '../../api/api';
+    import { markdownEditor } from 'vue-simplemde'
+    import { getArticleList, deleteArticle, editArticle } from '../../api/api';
     export default {
+        components: {
+            markdownEditor
+        },
         data(){
             return {
                 articles: [],
@@ -87,11 +90,25 @@
                 //编辑界面数据
                 editForm: {
                     id: 0,
-                    name: '',
-                    sex: -1,
-                    age: 0,
-                    birth: '',
-                    addr: ''
+                    title: '',
+                    summary: '',
+                    publish_at: '',
+                    tags: [],
+                    content: '',
+                },
+                configs: { // markdownEditor Config
+                    autoDownloadFontAwesome: false,
+                    // status: false, // 禁用底部状态栏
+                    placeholder: '好的习惯是好的开始:-)',
+                    autosave: {
+                        enabled: true,
+                        uniqueId: 'JBlogArticleID',
+                        delay: 1000
+                    },
+                    renderingConfig: {
+                        codeSyntaxHighlighting: true, // 开启代码高亮
+                        highlightingTheme: 'monokai-sublime',
+                    }
                 },
             }
         },
@@ -116,8 +133,18 @@
             },
             //显示编辑界面
             handleEdit: function (index, row) {
-                this.editFormVisible = true;
-                this.editForm = Object.assign({}, row);
+                editArticle(row.id).then((res) => {
+                    this.editFormVisible = true;
+                    console.log(res);
+                    this.editForm = {
+                        id: res.data.id,
+                        title: res.data.title,
+                        summary: res.data.summary,
+                        publish_at: res.data.publish_at,
+                        tags: res.data.tags,
+                        content: res.data.content,
+                    }
+                });
             },
             //编辑
             editSubmit: function () {

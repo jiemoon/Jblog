@@ -31004,12 +31004,13 @@ module.exports = exports['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_promise__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_promise__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return requestLogin; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return addArticle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return requestLogin; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return addArticle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getArticleList; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return uploadImage; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getTagList; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return deleteArticle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return editArticle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return uploadImage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getTagList; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return deleteArticle; });
 /* unused harmony export editUser */
 
 
@@ -31068,6 +31069,10 @@ var addArticle = function addArticle(params) {
 
 var getArticleList = function getArticleList(params) {
     return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(base + '/articles', { params: params });
+};
+
+var editArticle = function editArticle(id) {
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(base + '/articles/' + id + '/edit');
 };
 
 var uploadImage = function uploadImage(params) {
@@ -36785,7 +36790,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 email: this.ruleForm2.account,
                 password: this.ruleForm2.checkPass
             };
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["f" /* requestLogin */])(loginParams).then(function (data) {
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["g" /* requestLogin */])(loginParams).then(function (data) {
                 __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
 
                 if (data.success == true) {
@@ -36812,7 +36817,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         email: _this3.ruleForm2.account,
                         password: _this3.ruleForm2.checkPass
                     };
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["f" /* requestLogin */])(loginParams).then(function (data) {
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["g" /* requestLogin */])(loginParams).then(function (data) {
                         _this3.logining = false;
                         __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
                         var msg = data.msg,
@@ -36893,6 +36898,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 title: '',
                 publish_at: '',
                 tags: [],
+                summary: '',
                 content: ''
             },
             loading_serach: false,
@@ -36949,7 +36955,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var img = new FormData();
             img.append('img', fileList[0]);
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["c" /* uploadImage */])(img).then(function (res) {
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["d" /* uploadImage */])(img).then(function (res) {
                 if (res.data["status"] == "success") {
                     editor.setValue(editor.getValue().replace(placeholder, "![](" + res.data['uri'] + ")"));
                 } else {
@@ -36958,7 +36964,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         });
 
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["d" /* getTagList */])().then(function (res) {
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["e" /* getTagList */])().then(function (res) {
             _this2.tags = res.data;
         });
     },
@@ -36970,7 +36976,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$refs.form.validate(function (valid) {
                 if (valid) {
                     _this3.loading_publish = true;
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["e" /* addArticle */])(_this3.form).then(function (res) {
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["f" /* addArticle */])(_this3.form).then(function (res) {
                         if (res.data.status == 'OK') {
                             _this3.$message.success('发布成功');
                             _this3.handleReset();
@@ -37011,7 +37017,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_api__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_simplemde__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_simplemde___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_simplemde__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_api__ = __webpack_require__(51);
 //
 //
 //
@@ -37078,10 +37086,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
+    components: {
+        markdownEditor: __WEBPACK_IMPORTED_MODULE_0_vue_simplemde__["markdownEditor"]
+    },
     data: function data() {
         return {
             articles: [],
@@ -37099,11 +37110,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //编辑界面数据
             editForm: {
                 id: 0,
-                name: '',
-                sex: -1,
-                age: 0,
-                birth: '',
-                addr: ''
+                title: '',
+                summary: '',
+                publish_at: '',
+                tags: [],
+                content: ''
+            },
+            configs: { // markdownEditor Config
+                autoDownloadFontAwesome: false,
+                // status: false, // 禁用底部状态栏
+                placeholder: '好的习惯是好的开始:-)',
+                autosave: {
+                    enabled: true,
+                    uniqueId: 'JBlogArticleID',
+                    delay: 1000
+                },
+                renderingConfig: {
+                    codeSyntaxHighlighting: true, // 开启代码高亮
+                    highlightingTheme: 'monokai-sublime'
+                }
             }
         };
     },
@@ -37122,7 +37147,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
             this.listLoading = true;
 
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["a" /* getArticleList */])(para).then(function (res) {
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["a" /* getArticleList */])(para).then(function (res) {
                 console.log(res);
                 _this.total = res.data.total;
                 _this.articles = res.data.data;
@@ -37132,30 +37157,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         //显示编辑界面
         handleEdit: function handleEdit(index, row) {
-            this.editFormVisible = true;
-            this.editForm = Object.assign({}, row);
+            var _this2 = this;
+
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["b" /* editArticle */])(row.id).then(function (res) {
+                _this2.editFormVisible = true;
+                console.log(res);
+                _this2.editForm = {
+                    id: res.data.id,
+                    title: res.data.title,
+                    summary: res.data.summary,
+                    publish_at: res.data.publish_at,
+                    tags: res.data.tags,
+                    content: res.data.content
+                };
+            });
         },
         //编辑
         editSubmit: function editSubmit() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.$refs.editForm.validate(function (valid) {
                 if (valid) {
-                    _this2.$confirm('确认提交吗？', '提示', {}).then(function () {
-                        _this2.editLoading = true;
+                    _this3.$confirm('确认提交吗？', '提示', {}).then(function () {
+                        _this3.editLoading = true;
                         //NProgress.start();
-                        var para = Object.assign({}, _this2.editForm);
+                        var para = Object.assign({}, _this3.editForm);
                         para.birth = !para.birth || para.birth == '' ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
                         editUser(para).then(function (res) {
-                            _this2.editLoading = false;
+                            _this3.editLoading = false;
                             //NProgress.done();
-                            _this2.$message({
+                            _this3.$message({
                                 message: '提交成功',
                                 type: 'success'
                             });
-                            _this2.$refs['editForm'].resetFields();
-                            _this2.editFormVisible = false;
-                            _this2.getUsers();
+                            _this3.$refs['editForm'].resetFields();
+                            _this3.editFormVisible = false;
+                            _this3.getUsers();
                         });
                     });
                 }
@@ -37165,29 +37202,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         //删除
         handleDel: function handleDel(index, row) {
-            var _this3 = this;
+            var _this4 = this;
 
             this.$confirm('确认删除该记录吗?', '提示', {
                 type: 'warning'
             }).then(function () {
-                _this3.listLoading = true;
+                _this4.listLoading = true;
                 //NProgress.start();
                 var para = { id: row.id };
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["b" /* deleteArticle */])(para).then(function (res) {
-                    _this3.listLoading = false;
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["c" /* deleteArticle */])(para).then(function (res) {
+                    _this4.listLoading = false;
                     //NProgress.done();
-                    _this3.$message({
+                    _this4.$message({
                         message: '删除成功',
                         type: 'success'
                     });
-                    _this3.getArticles();
+                    _this4.getArticles();
                 });
             }).catch(function () {});
         },
         selsChange: function selsChange() {},
 
         batchRemove: function batchRemove() {
-            var _this4 = this;
+            var _this5 = this;
 
             var ids = this.sels.map(function (item) {
                 return item.id;
@@ -37195,17 +37232,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$confirm('确认删除选中记录吗？', '提示', {
                 type: 'warning'
             }).then(function () {
-                _this4.listLoading = true;
+                _this5.listLoading = true;
                 //NProgress.start();
                 var para = { ids: ids };
                 batchRemoveUser(para).then(function (res) {
-                    _this4.listLoading = false;
+                    _this5.listLoading = false;
                     //NProgress.done();
-                    _this4.$message({
+                    _this5.$message({
                         message: '删除成功',
                         type: 'success'
                     });
-                    _this4.getUsers();
+                    _this5.getUsers();
                 });
             }).catch(function () {});
         }
@@ -70284,88 +70321,97 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('el-form-item', {
     attrs: {
-      "label": "姓名",
-      "prop": "name"
+      "label": "标题",
+      "prop": "title"
     }
   }, [_c('el-input', {
-    attrs: {
-      "auto-complete": "off"
-    },
     model: {
-      value: (_vm.editForm.name),
+      value: (_vm.editForm.title),
       callback: function($$v) {
-        _vm.editForm.name = $$v
+        _vm.editForm.title = $$v
       },
-      expression: "editForm.name"
+      expression: "editForm.title"
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "性别"
+      "label": "标签",
+      "prop": "tags"
     }
-  }, [_c('el-radio-group', {
-    model: {
-      value: (_vm.editForm.sex),
-      callback: function($$v) {
-        _vm.editForm.sex = $$v
-      },
-      expression: "editForm.sex"
-    }
-  }, [_c('el-radio', {
-    staticClass: "radio",
+  }, [_c('el-select', {
+    staticStyle: {
+      "width": "100%"
+    },
     attrs: {
-      "label": 1
-    }
-  }, [_vm._v("男")]), _vm._v(" "), _c('el-radio', {
-    staticClass: "radio",
-    attrs: {
-      "label": 0
-    }
-  }, [_vm._v("女")])], 1)], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "年龄"
-    }
-  }, [_c('el-input-number', {
-    attrs: {
-      "min": 0,
-      "max": 200
+      "multiple": "",
+      "filterable": "",
+      "allow-create": "",
+      "placeholder": "请选择文章标签"
     },
     model: {
-      value: (_vm.editForm.age),
+      value: (_vm.editForm.tags),
       callback: function($$v) {
-        _vm.editForm.age = $$v
+        _vm.editForm.tags = $$v
       },
-      expression: "editForm.age"
+      expression: "editForm.tags"
     }
-  })], 1), _vm._v(" "), _c('el-form-item', {
+  }, _vm._l((_vm.editForm.tags), function(item) {
+    return _c('el-option', {
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "生日"
+      "label": "发布时间",
+      "prop": "publish_at"
     }
   }, [_c('el-date-picker', {
     attrs: {
       "type": "date",
+      "format": "yyyy-MM-dd",
       "placeholder": "选择日期"
     },
     model: {
-      value: (_vm.editForm.birth),
+      value: (_vm.editForm.publish_at),
       callback: function($$v) {
-        _vm.editForm.birth = $$v
+        _vm.editForm.publish_at = $$v
       },
-      expression: "editForm.birth"
+      expression: "editForm.publish_at"
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "地址"
+      "label": "摘要",
+      "prop": "summary"
     }
   }, [_c('el-input', {
     attrs: {
       "type": "textarea"
     },
     model: {
-      value: (_vm.editForm.addr),
+      value: (_vm.editForm.summary),
       callback: function($$v) {
-        _vm.editForm.addr = $$v
+        _vm.editForm.summary = $$v
       },
-      expression: "editForm.addr"
+      expression: "editForm.summary"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    staticClass: "theme",
+    attrs: {
+      "label": "内容",
+      "prop": "content"
+    }
+  }, [_c('markdown-editor', {
+    ref: "markdownEditor",
+    attrs: {
+      "configs": _vm.configs
+    },
+    model: {
+      value: (_vm.editForm.content),
+      callback: function($$v) {
+        _vm.editForm.content = $$v
+      },
+      expression: "editForm.content"
     }
   })], 1)], 1), _vm._v(" "), _c('div', {
     staticClass: "dialog-footer",

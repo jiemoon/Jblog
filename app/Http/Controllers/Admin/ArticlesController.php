@@ -21,6 +21,12 @@ class ArticlesController extends Controller
         return response()->json($articles);
     }
 
+    public function edit($id)
+    {
+        $article = Article::where('id', $id)->with('tags')->first();
+        return response()->json($article);
+    }
+
     public function store()
     {
         $this->validate(request(), [

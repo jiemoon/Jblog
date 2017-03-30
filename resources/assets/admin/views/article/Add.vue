@@ -43,6 +43,7 @@
                     title: '',
                     publish_at: '',
                     tags: [],
+                    summary: '',
                     content: '',
                 },
                 loading_serach: false,
