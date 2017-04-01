@@ -3,6 +3,7 @@
 /public/hot
 /storage/*.key
 /storage/debugbar
+/config/deploy.rb
 /vendor
 /.idea
 Homestead.json

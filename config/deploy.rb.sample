@@ -1,0 +1,55 @@
+require 'mina/git'
+
+set :domain, 'xxxxx'
+set :deploy_to, '/data/www/jblog'
+set :repository, 'https://github.com/jiemoon/Jblog.git'
+set :branch, 'master'
+
+set :shared_paths, ['storage', 'vendor', '.env', 'bootstrap/cache']
+task :environment do
+end
+task :setup => :environment do
+  queue! %[mkdir -p "#{deploy_to}/#{shared_path}/bootstrap/cache"]
+  queue! %[mkdir -p "#{deploy_to}/#{shared_path}/vendor"]
+  queue! %[mkdir -p "#{deploy_to}/#{shared_path}/storage/app"]
+  queue! %[mkdir -p "#{deploy_to}/#{shared_path}/storage/framework/cache"]
+  queue! %[mkdir -p "#{deploy_to}/#{shared_path}/storage/framework/sessions"]
+  queue! %[mkdir -p "#{deploy_to}/#{shared_path}/storage/framework/views"]
+  queue! %[mkdir -p "#{deploy_to}/#{shared_path}/storage/logs"]
+  queue  %[echo "-----> Be sure to edit '#{deploy_to}/#{shared_path}/.env'."]
+  if repository
+    repo_host = repository.split(%r{@|://}).last.split(%r{:|\/}).first
+    repo_port = /:([0-9]+)/.match(repository) && /:([0-9]+)/.match(repository)[1] || '22'
+    queue %[
+      if ! ssh-keygen -H  -F #{repo_host} &>/dev/null; then
+        ssh-keyscan -t rsa -p #{repo_port} -H #{repo_host} >> ~/.ssh/known_hosts
+      fi
+    ]
+  end
+end
+desc "Deploys the current version to the server."
+task :deploy => :environment do
+  to :before_hook do
+  end
+  deploy do
+    invoke :'git:clone'
+    invoke :'deploy:link_shared_paths'
+    invoke :'deploy:cleanup'
+    # 第一次部署的时候，先不执行下面这一行代码。第二次之后的部署才需要执行
+    queue "source ~/.bash_profile && cd #{deploy_to}/#{current_path} && composer install"
+    to :launch do
+      queue "rm -rf #{deploy_to}/#{current_path}/.gitignore"
+      queue "rm -rf #{deploy_to}/#{current_path}/.mina_git_revision"
+      queue "rm -rf #{deploy_to}/#{current_path}/README.md"
+      queue "rm -rf #{deploy_to}/#{current_path}/config/deploy"
+      queue "rm -rf #{deploy_to}/#{current_path}/config/deploy.rb"
+      queue "rm -rf #{deploy_to}/#{current_path}/config/nginx.conf"
+    end
+  end
+end
+# 用于回滚到上一个版本
+desc "Rollback to previous verison."
+task :rollback => :environment do
+  queue %[echo "----> Start to rollback"]
+  queue %[if [ $(ls #{deploy_to}/releases | wc -l) -gt 1 ]; then echo "---->Relink to previos release" && unlink #{deploy_to}/current && ln -s #{deploy_to}/releases/"$(ls #{deploy_to}/releases | tail -2 | head -1)" #{deploy_to}/current && echo "Remove old releases" && rm -rf #{deploy_to}/releases/"$(ls #{deploy_to}/releases | tail -1)" && echo "$(ls #{deploy_to}/releases | tail -1)" > #{deploy_to}/last_version && echo "Done. Rollback to v$(cat #{deploy_to}/last_version)" ; else echo "No more release to rollback" ; fi]
+end
