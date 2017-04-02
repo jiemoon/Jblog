@@ -43,7 +43,6 @@ class ArticlesController extends Controller
             'content.min' => '内容不能小于100个字',
         ]);
 
-        $slug = EasySlug::generateUniqueSlug(request('title'), 'articles', "slug");
         $publish_at = request('publish_at');
         $status = 'draft';
         if (isset($publish_at)) {
@@ -54,7 +53,7 @@ class ArticlesController extends Controller
         $article = Article::create([
             'user_id' => auth()->id(),
             'title' => request('title'),
-            'slug' => $slug,
+            'slug' => request('slug'),
             'publish_at' => $publish_at,
             'status' => $status,
             'summary' => request('summary'),
@@ -65,6 +64,36 @@ class ArticlesController extends Controller
         $article->tags()->attach($tags);
 
         return response()->json(['status' => 'OK']);
+    }
+
+    public function genSlug() {
+         $this->validate(request(), [
+            'title' => 'required|unique:articles|max:255',
+        ], [
+            'title.required' => '标题不能为空',
+            'title.max' => '标题长度不能超过255',
+        ]);
+
+         $title = request('title');
+        // { title } 翻译成英文
+        $salt = rand();
+        $sign = md5(env('BAIDU_FANYI_API_ID') . $title . $salt . env('BAIDU_FANYI_API_SECRET'));
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request('GET', 'http://api.fanyi.baidu.com/api/trans/vip/translate', [
+            'query' => [
+                'q' => $title,
+                'from' => 'zh',
+                'to' => 'en',
+                'appid' => env('BAIDU_FANYI_API_ID'),
+                'salt' => $salt,
+                'sign' => $sign
+            ]
+        ]);
+        $body = json_decode($res->getBody(), true);
+        $trans_result = $body['trans_result'][0]['dst'];
+        $title = $trans_result;
+        $slug = EasySlug::generateUniqueSlug($title, 'articles', "slug");
+        return response()->json(['slug' => $slug]);
     }
 
     private function normalizeTag(array $tags) {

@@ -8,6 +8,7 @@
         "php": ">=5.6.4",
         "easy-slug/easy-slug": "^2.0",
         "graham-campbell/markdown": "^7.1",
+        "guzzlehttp/guzzle": "^6.2",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "overtrue/laravel-filesystem-qiniu": "^0.0.1",
