@@ -61,6 +61,13 @@ const routes = [
                 meta: { requireAuth: true },
             },
             {
+                path: '/article/:articleId/edit',
+                name: 'edit_article',
+                component: require('./views/article/Edit'),
+                hidden: true,
+                meta: { requireAuth: true },
+            },
+            {
                 path: '/article',
                 name: '文章列表',
                 iconCls: 'el-icon-document',

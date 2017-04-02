@@ -4,7 +4,7 @@
             <el-input v-model="form.title" @blur="genSlug" placeholder="起个大气的标题呗"></el-input>
         </el-form-item>
         <el-form-item label="Slug" prop="slug">
-            <el-input v-model="form.slug" placeholder="自动根据标题来生成" :loading=true></el-input>
+            <el-input v-model="form.slug" placeholder="自动根据标题来生成"></el-input>
         </el-form-item>
         <el-form-item label="标签" prop="tags">
             <el-select v-model="form.tags" style="width:100%" multiple filterable allow-create placeholder="请选择文章标签">
@@ -33,7 +33,7 @@
     // 使用自定义编辑器主题时
     // import 'github-markdown-css'
 
-    import { addArticle, uploadImage, getTagList, genArticleSlug } from '../../api/api';
+    import { editArticle, uploadImage, getTagList, genArticleSlug } from '../../api/api';
 
     export default {
         components: {
@@ -43,6 +43,7 @@
             return {
                 tags: [],
                 form: {
+                    'id': '',
                     title: '',
                     slug: '',
                     publish_at: '',
@@ -50,7 +51,6 @@
                     summary: '',
                     content: '',
                 },
-                loading_serach: false,
                 loading_publish: false,
                 configs: { // markdownEditor Config
                     autoDownloadFontAwesome: false,
@@ -117,6 +117,20 @@
                         _this.$message.error(res.data["message"]);
                     }
                 })
+            });
+
+            editArticle(this.$route.params.articleId).then((res) => {
+                this.form = {
+                    id: res.data.id,
+                    title: res.data.title,
+                    summary: res.data.summary,
+                    tags: [],
+                    publish_at: res.data.publish_at,
+                    content: res.data.content,
+                }
+                for (var i = res.data.tags.length - 1; i >= 0; i--) {
+                    this.form.tags.push(res.data.tags[i].name);
+                }
             });
 
             getTagList().then((res) => {

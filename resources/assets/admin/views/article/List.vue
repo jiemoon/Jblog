@@ -29,7 +29,9 @@
             </el-table-column>
             <el-table-column label="操作" width="150">
                 <template scope="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <router-link :to="{name:'edit_article', params: {articleId: scope.row.id}}">
+                        <el-button size="small">编辑</el-button>
+                    </router-link>
                     <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>

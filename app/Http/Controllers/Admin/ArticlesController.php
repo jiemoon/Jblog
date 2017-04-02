@@ -68,7 +68,7 @@ class ArticlesController extends Controller
 
     public function genSlug() {
          $this->validate(request(), [
-            'title' => 'required|unique:articles|max:255',
+            'title' => 'required|max:255',
         ], [
             'title.required' => '标题不能为空',
             'title.max' => '标题长度不能超过255',

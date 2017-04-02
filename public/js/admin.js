@@ -31004,10 +31004,11 @@ module.exports = exports['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_promise__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_promise__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return requestLogin; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return addArticle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return requestLogin; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return addArticle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getArticleList; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return editArticle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return genArticleSlug; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return uploadImage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getTagList; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return deleteArticle; });
@@ -31073,6 +31074,10 @@ var getArticleList = function getArticleList(params) {
 
 var editArticle = function editArticle(id) {
     return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(base + '/articles/' + id + '/edit');
+};
+
+var genArticleSlug = function genArticleSlug(params) {
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(base + '/articles/gen_slug', { params: params });
 };
 
 var uploadImage = function uploadImage(params) {
@@ -31154,6 +31159,12 @@ var routes = [{
         name: '写文章',
         iconCls: 'el-icon-edit',
         component: __webpack_require__(145),
+        meta: { requireAuth: true }
+    }, {
+        path: '/article/:articleId/edit',
+        name: 'edit_article',
+        component: __webpack_require__(538),
+        hidden: true,
         meta: { requireAuth: true }
     }, {
         path: '/article',
@@ -36790,7 +36801,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 email: this.ruleForm2.account,
                 password: this.ruleForm2.checkPass
             };
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["g" /* requestLogin */])(loginParams).then(function (data) {
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["h" /* requestLogin */])(loginParams).then(function (data) {
                 __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
 
                 if (data.success == true) {
@@ -36817,7 +36828,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         email: _this3.ruleForm2.account,
                         password: _this3.ruleForm2.checkPass
                     };
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["g" /* requestLogin */])(loginParams).then(function (data) {
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["h" /* requestLogin */])(loginParams).then(function (data) {
                         _this3.logining = false;
                         __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
                         var msg = data.msg,
@@ -36879,6 +36890,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 // require.ensure([], () => require('github-markdown-css'), 'markdown-style')
@@ -36896,6 +36910,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             tags: [],
             form: {
                 title: '',
+                slug: '',
                 publish_at: '',
                 tags: [],
                 summary: '',
@@ -36976,7 +36991,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$refs.form.validate(function (valid) {
                 if (valid) {
                     _this3.loading_publish = true;
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["f" /* addArticle */])(_this3.form).then(function (res) {
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["g" /* addArticle */])(_this3.form).then(function (res) {
                         if (res.data.status == 'OK') {
                             _this3.$message.success('发布成功');
                             _this3.handleReset();
@@ -36994,6 +37009,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         handleReset: function handleReset() {
             this.$refs.form.resetFields();
             this.simplemde.value('');
+        },
+        genSlug: function genSlug() {
+            var _this4 = this;
+
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["f" /* genArticleSlug */])({ title: this.form.title }).then(function (res) {
+                _this4.form.slug = res.data.slug;
+            });
         }
     }
 };
@@ -37020,6 +37042,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_simplemde__ = __webpack_require__(199);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_simplemde___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_simplemde__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_api__ = __webpack_require__(51);
+//
+//
 //
 //
 //
@@ -69980,13 +70004,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "title": item.name
       }
     }, _vm._l((item.children), function(child) {
-      return _c('el-menu-item', {
+      return (!child.hidden) ? _c('el-menu-item', {
         attrs: {
           "index": child.path
         }
       }, [_c('i', {
         class: child.iconCls
-      }), _vm._v(_vm._s(child.name) + "\n                        ")])
+      }), _vm._v(_vm._s(child.name) + "\n                        ")]) : _vm._e()
     }))] : _vm._e()
   })], 2)], 1), _vm._v(" "), _c('section', {
     staticClass: "content-container"
@@ -70066,12 +70090,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "prop": "title"
     }
   }, [_c('el-input', {
+    attrs: {
+      "placeholder": "起个大气的标题呗"
+    },
+    on: {
+      "blur": _vm.genSlug
+    },
     model: {
       value: (_vm.form.title),
       callback: function($$v) {
         _vm.form.title = $$v
       },
       expression: "form.title"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Slug",
+      "prop": "slug"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "自动根据标题来生成",
+      "loading": true
+    },
+    model: {
+      value: (_vm.form.slug),
+      callback: function($$v) {
+        _vm.form.slug = $$v
+      },
+      expression: "form.slug"
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
@@ -70277,16 +70324,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     scopedSlots: _vm._u([
       ["default", function(scope) {
-        return [_c('el-button', {
+        return [_c('router-link', {
           attrs: {
-            "size": "small"
-          },
-          on: {
-            "click": function($event) {
-              _vm.handleEdit(scope.$index, scope.row)
+            "to": {
+              name: 'edit_article',
+              params: {
+                articleId: scope.row.id
+              }
             }
           }
-        }, [_vm._v("编辑")]), _vm._v(" "), _c('el-button', {
+        }, [_c('el-button', {
+          attrs: {
+            "size": "small"
+          }
+        }, [_vm._v("编辑")])], 1), _vm._v(" "), _c('el-button', {
           attrs: {
             "type": "danger",
             "size": "small"
@@ -88773,6 +88824,749 @@ if(false) {
 /***/ (function(module, exports) {
 
 /* (ignored) */
+
+/***/ }),
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */,
+/* 314 */,
+/* 315 */,
+/* 316 */,
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */,
+/* 332 */,
+/* 333 */,
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */,
+/* 342 */,
+/* 343 */,
+/* 344 */,
+/* 345 */,
+/* 346 */,
+/* 347 */,
+/* 348 */,
+/* 349 */,
+/* 350 */,
+/* 351 */,
+/* 352 */,
+/* 353 */,
+/* 354 */,
+/* 355 */,
+/* 356 */,
+/* 357 */,
+/* 358 */,
+/* 359 */,
+/* 360 */,
+/* 361 */,
+/* 362 */,
+/* 363 */,
+/* 364 */,
+/* 365 */,
+/* 366 */,
+/* 367 */,
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */,
+/* 372 */,
+/* 373 */,
+/* 374 */,
+/* 375 */,
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */,
+/* 380 */,
+/* 381 */,
+/* 382 */,
+/* 383 */,
+/* 384 */,
+/* 385 */,
+/* 386 */,
+/* 387 */,
+/* 388 */,
+/* 389 */,
+/* 390 */,
+/* 391 */,
+/* 392 */,
+/* 393 */,
+/* 394 */,
+/* 395 */,
+/* 396 */,
+/* 397 */,
+/* 398 */,
+/* 399 */,
+/* 400 */,
+/* 401 */,
+/* 402 */,
+/* 403 */,
+/* 404 */,
+/* 405 */,
+/* 406 */,
+/* 407 */,
+/* 408 */,
+/* 409 */,
+/* 410 */,
+/* 411 */,
+/* 412 */,
+/* 413 */,
+/* 414 */,
+/* 415 */,
+/* 416 */,
+/* 417 */,
+/* 418 */,
+/* 419 */,
+/* 420 */,
+/* 421 */,
+/* 422 */,
+/* 423 */,
+/* 424 */,
+/* 425 */,
+/* 426 */,
+/* 427 */,
+/* 428 */,
+/* 429 */,
+/* 430 */,
+/* 431 */,
+/* 432 */,
+/* 433 */,
+/* 434 */,
+/* 435 */,
+/* 436 */,
+/* 437 */,
+/* 438 */,
+/* 439 */,
+/* 440 */,
+/* 441 */,
+/* 442 */,
+/* 443 */,
+/* 444 */,
+/* 445 */,
+/* 446 */,
+/* 447 */,
+/* 448 */,
+/* 449 */,
+/* 450 */,
+/* 451 */,
+/* 452 */,
+/* 453 */,
+/* 454 */,
+/* 455 */,
+/* 456 */,
+/* 457 */,
+/* 458 */,
+/* 459 */,
+/* 460 */,
+/* 461 */,
+/* 462 */,
+/* 463 */,
+/* 464 */,
+/* 465 */,
+/* 466 */,
+/* 467 */,
+/* 468 */,
+/* 469 */,
+/* 470 */,
+/* 471 */,
+/* 472 */,
+/* 473 */,
+/* 474 */,
+/* 475 */,
+/* 476 */,
+/* 477 */,
+/* 478 */,
+/* 479 */,
+/* 480 */,
+/* 481 */,
+/* 482 */,
+/* 483 */,
+/* 484 */,
+/* 485 */,
+/* 486 */,
+/* 487 */,
+/* 488 */,
+/* 489 */,
+/* 490 */,
+/* 491 */,
+/* 492 */,
+/* 493 */,
+/* 494 */,
+/* 495 */,
+/* 496 */,
+/* 497 */,
+/* 498 */,
+/* 499 */,
+/* 500 */,
+/* 501 */,
+/* 502 */,
+/* 503 */,
+/* 504 */,
+/* 505 */,
+/* 506 */,
+/* 507 */,
+/* 508 */,
+/* 509 */,
+/* 510 */,
+/* 511 */,
+/* 512 */,
+/* 513 */,
+/* 514 */,
+/* 515 */,
+/* 516 */,
+/* 517 */,
+/* 518 */,
+/* 519 */,
+/* 520 */,
+/* 521 */,
+/* 522 */,
+/* 523 */,
+/* 524 */,
+/* 525 */,
+/* 526 */,
+/* 527 */,
+/* 528 */,
+/* 529 */,
+/* 530 */,
+/* 531 */,
+/* 532 */,
+/* 533 */,
+/* 534 */,
+/* 535 */,
+/* 536 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_simplemde__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_simplemde___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_simplemde__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_api__ = __webpack_require__(51);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+// require.ensure([], () => require('github-markdown-css'), 'markdown-style')
+// 使用自定义编辑器主题时
+// import 'github-markdown-css'
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    components: {
+        markdownEditor: __WEBPACK_IMPORTED_MODULE_0_vue_simplemde__["markdownEditor"]
+    },
+    data: function data() {
+        return {
+            tags: [],
+            form: {
+                'id': '',
+                title: '',
+                slug: '',
+                publish_at: '',
+                tags: [],
+                summary: '',
+                content: ''
+            },
+            loading_publish: false,
+            configs: { // markdownEditor Config
+                autoDownloadFontAwesome: false,
+                // status: false, // 禁用底部状态栏
+                placeholder: '好的习惯是好的开始:-)',
+                autosave: {
+                    enabled: true,
+                    uniqueId: 'JBlogArticleID',
+                    delay: 1000
+                },
+                renderingConfig: {
+                    codeSyntaxHighlighting: true, // 开启代码高亮
+                    highlightingTheme: 'monokai-sublime'
+                }
+            },
+            rules: {
+                title: [{ required: true, message: '请输入标题', trigger: 'blur' }, { min: 3, max: 255, message: '长度在 3 到 255 个字', trigger: 'blur' }],
+                summary: [{ required: true, message: '请输入摘要', trigger: 'blur' }, { min: 3, max: 255, message: '长度在 3 到 255 个字', trigger: 'blur' }],
+                content: [{ required: true, message: '请写文章内容', trigger: 'blur' }, { min: 100, message: '最少要 100 个字', trigger: 'blur' }]
+            }
+        };
+    },
+
+    computed: {
+        simplemde: function simplemde() {
+            return this.$refs.markdownEditor.simplemde;
+        }
+    },
+    mounted: function mounted() {
+        var _this2 = this;
+
+        this.form.content = this.simplemde.value();
+        var _this = this;
+        this.simplemde.codemirror.on('drop', function (editor, e) {
+            var fileList = e.dataTransfer.files;
+            if (fileList.length > 1) {
+                _this.$message.error('一次只能上传一张图片');
+                return false;
+            }
+            if (fileList[0].type.indexOf('image') === -1) {
+                _this.$message.error("只能上传图片！");
+                return false;
+            }
+
+            // placeholder
+            var placeholder = "![Uploading " + fileList[0]['name'] + "...]()";
+            editor.replaceRange(placeholder, {
+                line: editor.getCursor().line,
+                ch: editor.getCursor().ch
+            });
+
+            var img = new FormData();
+            img.append('img', fileList[0]);
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["d" /* uploadImage */])(img).then(function (res) {
+                if (res.data["status"] == "success") {
+                    editor.setValue(editor.getValue().replace(placeholder, "![](" + res.data['uri'] + ")"));
+                } else {
+                    _this.$message.error(res.data["message"]);
+                }
+            });
+        });
+
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["b" /* editArticle */])(this.$route.params.articleId).then(function (res) {
+            _this2.form = {
+                id: res.data.id,
+                title: res.data.title,
+                summary: res.data.summary,
+                tags: [],
+                publish_at: res.data.publish_at,
+                content: res.data.content
+            };
+            for (var i = res.data.tags.length - 1; i >= 0; i--) {
+                _this2.form.tags.push(res.data.tags[i].name);
+            }
+        });
+
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["e" /* getTagList */])().then(function (res) {
+            _this2.tags = res.data;
+        });
+    },
+
+    methods: {
+        handleSubmit: function handleSubmit() {
+            var _this3 = this;
+
+            this.$refs.form.validate(function (valid) {
+                if (valid) {
+                    _this3.loading_publish = true;
+                    addArticle(_this3.form).then(function (res) {
+                        if (res.data.status == 'OK') {
+                            _this3.$message.success('发布成功');
+                            _this3.handleReset();
+                        } else {
+                            console.log(res);
+                            _this3.$message.error('发布失败');
+                        }
+                        _this3.loading_publish = false;
+                    });
+                } else {
+                    return false;
+                }
+            });
+        },
+        handleReset: function handleReset() {
+            this.$refs.form.resetFields();
+            this.simplemde.value('');
+        },
+        genSlug: function genSlug() {
+            var _this4 = this;
+
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["f" /* genArticleSlug */])({ title: this.form.title }).then(function (res) {
+                _this4.form.slug = res.data.slug;
+            });
+        }
+    }
+};
+
+/***/ }),
+/* 537 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(6)();
+exports.push([module.i, "\n.theme .editor-preview-side pre,.theme .editor-preview pre {\n    color: #abb2bf!important;\n    background: #23241f!important;\n    padding: 0.5em;\n}\n.editor-toolbar a, .editor-toolbar a.active, .editor-toolbar a:hover {\n    outline: none;\n}\n.markdown-editor .CodeMirror {\n    z-index: 1001;\n}\na {\n　　-webkit-tap-highlight-color: rgba(0,0,0,0);\n　　-webkit-tap-highlight-color: transparent;\n　　outline: none;\n}\n.el-select__tags {\n    width: 100%;\n}\n", ""]);
+
+/***/ }),
+/* 538 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(540)
+
+var Component = __webpack_require__(4)(
+  /* script */
+  __webpack_require__(536),
+  /* template */
+  __webpack_require__(539),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/wenjie/Code/Laravel/Jblog/resources/assets/admin/views/article/Edit.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Edit.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0076b0f6", Component.options)
+  } else {
+    hotAPI.reload("data-v-0076b0f6", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 539 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('el-form', {
+    ref: "form",
+    staticStyle: {
+      "margin": "20px",
+      "width": "90%",
+      "min-width": "600px"
+    },
+    attrs: {
+      "model": _vm.form,
+      "rules": _vm.rules,
+      "label-width": "80px"
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "标题",
+      "prop": "title"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "起个大气的标题呗"
+    },
+    on: {
+      "blur": _vm.genSlug
+    },
+    model: {
+      value: (_vm.form.title),
+      callback: function($$v) {
+        _vm.form.title = $$v
+      },
+      expression: "form.title"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Slug",
+      "prop": "slug"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "自动根据标题来生成"
+    },
+    model: {
+      value: (_vm.form.slug),
+      callback: function($$v) {
+        _vm.form.slug = $$v
+      },
+      expression: "form.slug"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "标签",
+      "prop": "tags"
+    }
+  }, [_c('el-select', {
+    staticStyle: {
+      "width": "100%"
+    },
+    attrs: {
+      "multiple": "",
+      "filterable": "",
+      "allow-create": "",
+      "placeholder": "请选择文章标签"
+    },
+    model: {
+      value: (_vm.form.tags),
+      callback: function($$v) {
+        _vm.form.tags = $$v
+      },
+      expression: "form.tags"
+    }
+  }, _vm._l((_vm.tags), function(item) {
+    return _c('el-option', {
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "发布时间",
+      "prop": "publish_at"
+    }
+  }, [_c('el-date-picker', {
+    attrs: {
+      "type": "date",
+      "format": "yyyy-MM-dd",
+      "placeholder": "选择日期"
+    },
+    model: {
+      value: (_vm.form.publish_at),
+      callback: function($$v) {
+        _vm.form.publish_at = $$v
+      },
+      expression: "form.publish_at"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "摘要",
+      "prop": "summary"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "textarea"
+    },
+    model: {
+      value: (_vm.form.summary),
+      callback: function($$v) {
+        _vm.form.summary = $$v
+      },
+      expression: "form.summary"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    staticClass: "theme",
+    attrs: {
+      "label": "内容",
+      "prop": "content"
+    }
+  }, [_c('markdown-editor', {
+    ref: "markdownEditor",
+    attrs: {
+      "configs": _vm.configs
+    },
+    model: {
+      value: (_vm.form.content),
+      callback: function($$v) {
+        _vm.form.content = $$v
+      },
+      expression: "form.content"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    staticStyle: {
+      "text-align": "right"
+    }
+  }, [_c('el-button', {
+    attrs: {
+      "type": "info"
+    }
+  }, [_vm._v("存为草稿")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary",
+      "loading": _vm.loading_publish
+    },
+    on: {
+      "click": _vm.handleSubmit
+    }
+  }, [_vm._v("立即发布")])], 1)], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-0076b0f6", module.exports)
+  }
+}
+
+/***/ }),
+/* 540 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(537);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(17)("0a665e17", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-0076b0f6!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Edit.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-0076b0f6!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Edit.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

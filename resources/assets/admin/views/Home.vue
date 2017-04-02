@@ -26,7 +26,7 @@
                     theme="dark" unique-opened router>
                     <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
                         <el-menu-item-group :title="item.name">
-                            <el-menu-item v-for="child in item.children" :index="child.path">
+                            <el-menu-item v-for="child in item.children" v-if="!child.hidden" :index="child.path">
                                 <i :class="child.iconCls"></i>{{child.name}}
                             </el-menu-item>
                         </el-menu-item-group>
