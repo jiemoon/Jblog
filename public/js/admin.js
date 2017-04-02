@@ -31018,7 +31018,7 @@ module.exports = exports['default'];
 
 // axios 配置
 __WEBPACK_IMPORTED_MODULE_0_axios___default.a.defaults.timeout = 5000;
-var base = 'http://jblog.app/api/admin';
+var base = ApiUrl;
 // axios.defaults.baseURL = 'https://api.github.com';
 
 // http request 拦截器
