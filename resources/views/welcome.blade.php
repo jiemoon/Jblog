@@ -25,7 +25,7 @@
         <ul>
             <li>
                 <a href="{{ config('blog.blog') }}">
-                    <i class="fa fa-yelp fa-2x"></i>
+                    <i class="fa fa-wordpress fa-2x"></i>
                 </a>
             </li>
             <li>
