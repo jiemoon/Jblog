@@ -18,6 +18,9 @@ class AppServiceProvider extends ServiceProvider
         //         \Log::info('[SQL]'.$sql." with: ".join(',', $bindings));
         //     });
         // }
+
+        Schema::defaultStringLength(191); // Solved by increasing StringLength
+
     }
 
     /**
