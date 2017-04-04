@@ -13,7 +13,7 @@
             <a href="{{ config('blog.github') }}" target="_blank" class="nav-list-link">GITHUB</a>
         </li>
         <li class="nav-list-item">
-            <a href="/atom.xml" target="_self" class="nav-list-link">RSS</a>
+            <a href="/rss" target="_self" class="nav-list-link">RSS</a>
         </li>
     </ul>
 </header>

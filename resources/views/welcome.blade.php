@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>jiemoon.me</title>
+        <title>{{ config('blog.title') }}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="short icon" href="/favicon.png">
         <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">

@@ -12,6 +12,7 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "overtrue/laravel-filesystem-qiniu": "^0.0.1",
+        "suin/php-rss-writer": "^1.5",
         "tymon/jwt-auth": "^0.5.10"
     },
     "require-dev": {

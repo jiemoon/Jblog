@@ -9,6 +9,8 @@ Route::get('/posts', function() {
     return view('web.articles.index', compact('articles'));
 });
 
+Route::get('/rss', 'Web\HomeController@rss');
+
 Route::get('/{year}/{month}/{day}/{slug}', function($year, $month, $day, $slug) {
     $article = App\Models\Article::where('slug', $slug)->first();
     return view('web.articles.show', compact('article'));

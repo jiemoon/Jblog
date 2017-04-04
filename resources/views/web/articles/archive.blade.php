@@ -7,9 +7,9 @@
             @foreach ($articles as $article)
                 <div class="post-item">
                     <div class="post-time">
-                        {{ generate_article_date($article->publish_at) }}
+                        {{ $article->publish_date() }}
                     </div>
-                    <a href="{{ generate_article_url($article) }}" class="post-title-link">{{ $article->title }}</a>
+                    <a href="{{ $article->url() }}" class="post-title-link">{{ $article->title }}</a>
                 </div>
             @endforeach
         @endforeach

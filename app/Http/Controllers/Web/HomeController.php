@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Services\RssFeed;
+
 class HomeController extends Controller
 {
     /**
@@ -21,5 +23,11 @@ class HomeController extends Controller
     public function index()
     {
         return view('web.home');
+    }
+
+    public function rss(RssFeed $feed)
+    {
+        $rss = $feed->getRSS();
+        return response($rss)->header('Content-type', 'application/rss+xml');
     }
 }

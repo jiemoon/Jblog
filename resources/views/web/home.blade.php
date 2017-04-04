@@ -3,10 +3,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>jiemoon.me</title>
+    <title>{{ config('blog.title') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="short icon" href="/favicon.png">
     <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="alternate" type="application/rss+xml" href="{{ url('rss') }}" title="RSS Feed {{ config('blog.title') }}">
     <style>
       html,body,ul,li {margin: 0;padding: 0}
       body { background: #fff; font-family: sans-serif,"Arial","Microsoft YaHei","黑体","宋体"; color: #333; line-height: 1; text-align: center; font-size: 1em; padding-top: 1em;    padding-top: 14%;}
