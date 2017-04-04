@@ -57,6 +57,8 @@ export const getArticleList = params => { return axios.get(`${base}/articles`, {
 
 export const editArticle = id => { return axios.get(`${base}/articles/${id}/edit`); };
 
+export const updateArticle = (id, params) => { return axios.put(`${base}/articles/${id}`, params); };
+
 export const genArticleSlug = params => { return axios.get(`${base}/articles/gen_slug`, { params: params }); };
 
 export const uploadImage = params => { return axios.post(`${base}/images/upload`, params); };

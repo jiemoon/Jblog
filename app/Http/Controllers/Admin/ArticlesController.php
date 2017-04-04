@@ -5,69 +5,52 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use EasySlug\EasySlug\EasySlugFacade as EasySlug;
-use App\Models\Article;
-use App\Models\Tag;
+use App\Http\Requests\StoreArticleRequest;
+use App\Repositories\ArticleRepository;
 
 class ArticlesController extends Controller
 {
+    protected $articleRepository;
+
+    public function __construct(ArticleRepository $articleRepository)
+    {
+        $this->articleRepository = $articleRepository;
+    }
+
     public function index(Request $request)
     {
-        $title = $request->get('title');
-        $query = Article::latest();
-        if(!empty($title)) {
-            $query->where('title', 'like', '%'.$title.'%');
-        }
-        $articles = $query->paginate(15)->toArray();
+        $articles = $this->articleRepository->getPageListBySearchTitle($request->get('title'));
         return response()->json($articles);
     }
 
     public function edit($id)
     {
-        $article = Article::where('id', $id)->with('tags')->first();
+        $article = $this->articleRepository->byIdIWithTags($id);
         return response()->json($article);
     }
 
-    public function store()
+    public function store(StoreArticleRequest $request)
     {
-        $this->validate(request(), [
-            'title' => 'required|unique:articles|max:255',
-            'summary' => 'required|max:255',
-            'content' => 'required|min:100',
-        ], [
-            'title.required' => '标题不能为空',
-            'title.unique' => '标题已存在',
-            'title.max' => '标题长度不能超过255',
-            'summary.required' => '摘要不能为空',
-            'summary.max' => '摘要度不能超过255',
-            'content.required' => '内容不能为空',
-            'content.min' => '内容不能小于100个字',
-        ]);
-
-        $publish_at = request('publish_at');
         $status = 'draft';
-        if (isset($publish_at)) {
-            $publish_at = date('Y-m-d H:i:s',  strtotime($publish_at));
-            $status = 'published';
-        }
-
-        $article = Article::create([
+        $data = [
             'user_id' => auth()->id(),
-            'title' => request('title'),
-            'slug' => request('slug'),
-            'publish_at' => $publish_at,
+            'title' => $request->get('title'),
+            'slug' => $request->get('slug'),
+            'publish_at' => $request->get('publish_at'),
             'status' => $status,
-            'summary' => request('summary'),
-            'content' => request('content')
-        ]);
+            'summary' => $request->get('summary'),
+            'content' => $request->get('content')
+        ];
 
-        $tags = $this->normalizeTag(request('tags'));
+        $article = $this->articleRepository->create($data);
+        $tags = $this->articleRepository->normalizeTag($request->get('tags'));
         $article->tags()->attach($tags);
 
         return response()->json(['status' => 'OK']);
     }
 
     public function genSlug() {
-         $this->validate(request(), [
+        $this->validate(request(), [
             'title' => 'required|max:255',
         ], [
             'title.required' => '标题不能为空',
@@ -96,25 +79,27 @@ class ArticlesController extends Controller
         return response()->json(['slug' => $slug]);
     }
 
-    private function normalizeTag(array $tags) {
-        return collect($tags)->map(function($tag) {
-            if(is_integer($tag)) {
-                if (!is_null(Tag::find($tag))) {
-                    Tag::find($tag)->increment('article_count');
-                    return $tag;
-                }
-            }
+    public function update(StoreArticleRequest $request, $id)
+    {
+        $article = $this->articleRepository->byId($id);
 
-            $new_tag = Tag::firstOrCreate(['name' => $tag]);
-            $new_tag->article_count ++;
-            $new_tag->save();
-            return $new_tag->id;
-        })->toArray();
+        $article->update([
+            'title' => $request->get('title'),
+            'slug' => $request->get('slug'),
+            'publish_at' => $request->get('publish_at'),
+            'summary' => $request->get('summary'),
+            'content' => $request->get('content'),
+        ]);
+
+        $tags = $this->articleRepository->normalizeTag(request('tags'));
+        $article->tags()->sync($tags);
+
+        return response()->json(['status' => 'OK']);
     }
 
     public function destroy(Request $request)
     {
-        $article = Article::find($request->get('id'));
+        $article = $this->articleRepository->byId($request->get('id'));
         $article->delete();
         return response()->json(['status' => 'OK']);
     }

@@ -31004,11 +31004,12 @@ module.exports = exports['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__router__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_promise__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_promise__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return requestLogin; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return requestLogin; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return addArticle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getArticleList; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return editArticle; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return genArticleSlug; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return updateArticle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return genArticleSlug; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return uploadImage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getTagList; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return deleteArticle; });
@@ -31074,6 +31075,10 @@ var getArticleList = function getArticleList(params) {
 
 var editArticle = function editArticle(id) {
     return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(base + '/articles/' + id + '/edit');
+};
+
+var updateArticle = function updateArticle(id, params) {
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put(base + '/articles/' + id, params);
 };
 
 var genArticleSlug = function genArticleSlug(params) {
@@ -36801,7 +36806,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 email: this.ruleForm2.account,
                 password: this.ruleForm2.checkPass
             };
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["h" /* requestLogin */])(loginParams).then(function (data) {
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["i" /* requestLogin */])(loginParams).then(function (data) {
                 __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
 
                 if (data.success == true) {
@@ -36828,7 +36833,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         email: _this3.ruleForm2.account,
                         password: _this3.ruleForm2.checkPass
                     };
-                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["h" /* requestLogin */])(loginParams).then(function (data) {
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__api_api__["i" /* requestLogin */])(loginParams).then(function (data) {
                         _this3.logining = false;
                         __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
                         var msg = data.msg,
@@ -37013,7 +37018,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         genSlug: function genSlug() {
             var _this4 = this;
 
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["f" /* genArticleSlug */])({ title: this.form.title }).then(function (res) {
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["h" /* genArticleSlug */])({ title: this.form.title }).then(function (res) {
                 _this4.form.slug = res.data.slug;
             });
         }
@@ -89284,14 +89289,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["b" /* editArticle */])(this.$route.params.articleId).then(function (res) {
-            _this2.form = {
-                id: res.data.id,
-                title: res.data.title,
-                summary: res.data.summary,
-                tags: [],
-                publish_at: res.data.publish_at,
-                content: res.data.content
-            };
+            _this2.form.id = res.data.id, _this2.form.title = res.data.title;
+            _this2.form.summary = res.data.summary;
+            _this2.form.slug = res.data.slug;
+            _this2.form.publish_at = res.data.publish_at;
+            _this2.form.content = res.data.content;
             for (var i = res.data.tags.length - 1; i >= 0; i--) {
                 _this2.form.tags.push(res.data.tags[i].name);
             }
@@ -89309,13 +89311,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$refs.form.validate(function (valid) {
                 if (valid) {
                     _this3.loading_publish = true;
-                    addArticle(_this3.form).then(function (res) {
+                    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["f" /* updateArticle */])(_this3.form.id, _this3.form).then(function (res) {
                         if (res.data.status == 'OK') {
-                            _this3.$message.success('发布成功');
-                            _this3.handleReset();
+                            _this3.$message.success('更新成功');
+                            _this3.$router.push({ path: '/article' });
                         } else {
                             console.log(res);
-                            _this3.$message.error('发布失败');
+                            var message = '';
+                            for (var field in res.data) {
+                                message += res.data[field] + ',';
+                            }
+                            _this3.$message.error(message);
                         }
                         _this3.loading_publish = false;
                     });
@@ -89327,13 +89333,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         handleReset: function handleReset() {
             this.$refs.form.resetFields();
             this.simplemde.value('');
-        },
-        genSlug: function genSlug() {
-            var _this4 = this;
-
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["f" /* genArticleSlug */])({ title: this.form.title }).then(function (res) {
-                _this4.form.slug = res.data.slug;
-            });
         }
     }
 };
@@ -89408,9 +89407,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('el-input', {
     attrs: {
       "placeholder": "起个大气的标题呗"
-    },
-    on: {
-      "blur": _vm.genSlug
     },
     model: {
       value: (_vm.form.title),

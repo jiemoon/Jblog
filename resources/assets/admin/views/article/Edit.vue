@@ -1,7 +1,7 @@
 <template>
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" style="margin:20px;width:90%;min-width:600px;">
         <el-form-item label="标题" prop="title">
-            <el-input v-model="form.title" @blur="genSlug" placeholder="起个大气的标题呗"></el-input>
+            <el-input v-model="form.title" placeholder="起个大气的标题呗"></el-input>
         </el-form-item>
         <el-form-item label="Slug" prop="slug">
             <el-input v-model="form.slug" placeholder="自动根据标题来生成"></el-input>
@@ -33,7 +33,7 @@
     // 使用自定义编辑器主题时
     // import 'github-markdown-css'
 
-    import { editArticle, uploadImage, getTagList, genArticleSlug } from '../../api/api';
+    import { editArticle, uploadImage, getTagList, updateArticle } from '../../api/api';
 
     export default {
         components: {
@@ -120,14 +120,12 @@
             });
 
             editArticle(this.$route.params.articleId).then((res) => {
-                this.form = {
-                    id: res.data.id,
-                    title: res.data.title,
-                    summary: res.data.summary,
-                    tags: [],
-                    publish_at: res.data.publish_at,
-                    content: res.data.content,
-                }
+                this.form.id = res.data.id,
+                this.form.title = res.data.title;
+                this.form.summary = res.data.summary;
+                this.form.slug = res.data.slug;
+                this.form.publish_at = res.data.publish_at;
+                this.form.content = res.data.content;
                 for (var i = res.data.tags.length - 1; i >= 0; i--) {
                     this.form.tags.push(res.data.tags[i].name);
                 }
@@ -142,13 +140,17 @@
                 this.$refs.form.validate((valid) => {
                     if (valid) {
                         this.loading_publish = true
-                        addArticle(this.form).then((res) => {
+                        updateArticle(this.form.id, this.form).then((res) => {
                             if(res.data.status == 'OK') {
-                                this.$message.success('发布成功');
-                                this.handleReset();
+                                this.$message.success('更新成功');
+                                this.$router.push({ path: '/article' });
                             } else {
                                 console.log(res);
-                                this.$message.error('发布失败');
+                                var message = '';
+                                for(var field in res.data) {
+                                    message += res.data[field] + ','
+                                }
+                                this.$message.error(message);
                             }
                             this.loading_publish = false
                         });
@@ -160,11 +162,6 @@
             handleReset() {
                 this.$refs.form.resetFields();
                 this.simplemde.value('');
-            },
-            genSlug() {
-                genArticleSlug({ title: this.form.title }).then((res) => {
-                    this.form.slug = res.data.slug
-                });
             }
         }
     }
