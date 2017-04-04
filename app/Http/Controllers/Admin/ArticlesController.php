@@ -80,7 +80,7 @@ class ArticlesController extends Controller
     }
 
     public function update(StoreArticleRequest $request, $id)
-
+    {
         $article = $this->articleRepository->byId($id);
 
         $article->update([
