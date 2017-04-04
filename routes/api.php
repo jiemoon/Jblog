@@ -23,6 +23,7 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function() {
     Route::group(['middleware' => 'jwt.auth.admin'], function() {
         Route::get('/articles/gen_slug', 'ArticlesController@genSlug');
         Route::resource('articles', 'ArticlesController');
+        Route::post('/user/password', 'AdminsController@updatePassword');
         // Route::get('/articles', 'ArticlesController@index');
         // Route::post('/articles', 'ArticlesController@store');
         // Route::delete('/articles', 'ArticlesController@destroy');

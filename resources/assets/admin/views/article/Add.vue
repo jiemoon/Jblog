@@ -20,7 +20,7 @@
         <el-form-item label="内容" class="theme" prop="content">
             <markdown-editor v-model="form.content" :configs="configs" ref="markdownEditor"></markdown-editor>
         </el-form-item>
-        <el-form-item style="text-align: right;">
+        <el-form-item style="text-align: center;">
             <el-button type="info">存为草稿</el-button>
             <el-button type="primary" @click="handleSubmit" :loading="loading_publish">立即发布</el-button>
         </el-form-item>
@@ -160,7 +160,7 @@
     .theme .editor-preview-side pre,.theme .editor-preview pre {
         color: #abb2bf!important;
         background: #23241f!important;
-        padding: 0.5em;
+        /*padding: 0.5em;*/
     }
     .editor-toolbar a, .editor-toolbar a.active, .editor-toolbar a:hover {
         outline: none;
@@ -168,6 +168,7 @@
 
     .markdown-editor .CodeMirror {
         z-index: 1001;
+        padding: 0;
     }
 
     a {

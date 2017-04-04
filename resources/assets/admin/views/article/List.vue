@@ -127,7 +127,6 @@
                 this.listLoading = true;
 
                 getArticleList(para).then((res) => {
-                    console.log(res);
                     this.total = res.data.total;
                     this.articles = res.data.data;
                     this.listLoading = false;

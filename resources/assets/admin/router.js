@@ -36,6 +36,21 @@ const routes = [
     },
     {
         path: '/',
+        name: '个人设置',
+        component: require('./views/Home'),
+        hidden: true,
+        children: [
+            {
+                path: '/user/password',
+                component: require('./views/user/Password'),
+                iconCls: 'el-icon-message',
+                name: '修改密码',
+                meta: { requireAuth: true },
+            },
+        ]
+    },
+    {
+        path: '/',
         name: '配置',
         component: require('./views/Home'),
         children: [

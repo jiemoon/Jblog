@@ -69,3 +69,5 @@ export const deleteArticle = params => { return axios.delete(`${base}/articles`,
 
 export const editUser = params => { return axios.get(`${base}/user/edit`, { params: params }); };
 
+export const modifyPassword = params => { return axios.post(`${base}/user/password`, params); };
+
