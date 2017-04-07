@@ -171,6 +171,7 @@ return [
         EasySlug\EasySlug\EasySlugServiceProvider::class,
         GrahamCampbell\Markdown\MarkdownServiceProvider::class,
         Overtrue\LaravelFilesystem\Qiniu\QiniuStorageServiceProvider::class,
+        Jiemoon\ChineseSlug\ChineseSlugServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -231,6 +232,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'EasySlug' => EasySlug\EasySlug\EasySlugFacade::class,
+        'ChineseSlug' => Jiemoon\ChineseSlug\Facades\ChineseSlug::class,
         'Markdown' => GrahamCampbell\Markdown\Facades\Markdown::class,
 
     ],

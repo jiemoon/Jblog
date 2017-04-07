@@ -9,6 +9,7 @@
         "easy-slug/easy-slug": "^2.0",
         "graham-campbell/markdown": "^7.1",
         "guzzlehttp/guzzle": "^6.2",
+        "jiemoon/chinese-slug": "dev-master",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "overtrue/laravel-filesystem-qiniu": "^0.0.1",
@@ -34,6 +35,7 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Jiemoon\\ChineseSlug\\": "packages/Jiemoon/ChineseSlug/src",
             "Tests\\": "tests/"
         }
     },

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use EasySlug\EasySlug\EasySlugFacade as EasySlug;
 use App\Http\Requests\StoreArticleRequest;
 use App\Repositories\ArticleRepository;
 
@@ -57,25 +56,8 @@ class ArticlesController extends Controller
             'title.max' => '标题长度不能超过255',
         ]);
 
-         $title = request('title');
-        // { title } 翻译成英文
-        $salt = rand();
-        $sign = md5(env('BAIDU_FANYI_API_ID') . $title . $salt . env('BAIDU_FANYI_API_SECRET'));
-        $client = new \GuzzleHttp\Client();
-        $res = $client->request('GET', 'http://api.fanyi.baidu.com/api/trans/vip/translate', [
-            'query' => [
-                'q' => $title,
-                'from' => 'zh',
-                'to' => 'en',
-                'appid' => env('BAIDU_FANYI_API_ID'),
-                'salt' => $salt,
-                'sign' => $sign
-            ]
-        ]);
-        $body = json_decode($res->getBody(), true);
-        $trans_result = $body['trans_result'][0]['dst'];
-        $title = $trans_result;
-        $slug = EasySlug::generateUniqueSlug($title, 'articles', "slug");
+        $slug = \ChineseSlug::generateUniqueSlug(request('title'), 'articles');
+        // $slug = EasySlug::generateUniqueSlug($title, 'articles', "slug");
         return response()->json(['slug' => $slug]);
     }
 
