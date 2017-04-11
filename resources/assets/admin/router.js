@@ -28,7 +28,7 @@ const routes = [
             {
                 path: '/',
                 component: require('./views/statics/Overview'),
-                iconCls: 'el-icon-message',
+                iconCls: 'fa fa-tachometer',
                 name: '概览',
                 meta: { requireAuth: true },
             },

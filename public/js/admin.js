@@ -29347,7 +29347,7 @@ var routes = [{
     children: [{
         path: '/',
         component: __webpack_require__(183),
-        iconCls: 'el-icon-message',
+        iconCls: 'fa fa-tachometer',
         name: '概览',
         meta: { requireAuth: true }
     }]
