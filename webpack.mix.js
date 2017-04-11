@@ -27,3 +27,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .js('resources/assets/admin/admin.js', 'public/js')
    .extract(['vue', 'axios', 'vue-router'])
    .sass('resources/assets/admin/admin.scss', 'public/css');
+
+if (mix.config.inProduction) {
+    mix.version();
+}
