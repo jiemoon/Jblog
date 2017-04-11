@@ -17,14 +17,20 @@ composer install
 ```
 
 ### 3. Install Node Module
+
 ```shell
 yarn // or npm install
 ```
 
 ### 4. Init Project
+
 ```shell
-// TODO
+php artisan migrate --seed
+yarn run dev
 ```
+
+You can access the Admin Cpanel through `http://jblog.app/cpanel`
+user:pwd: admin@admin.com:123456
 
 ## Deploy
 > We use [Mina](http://nadarei.co/mina/) to deploy our project. 

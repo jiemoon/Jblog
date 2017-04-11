@@ -5,12 +5,13 @@ set :deploy_to, '/data/www/jblog'
 set :repository, 'https://github.com/jiemoon/Jblog.git'
 set :branch, 'master'
 
-set :shared_paths, ['storage', 'vendor', '.env', 'bootstrap/cache']
+set :shared_paths, ['storage', 'vendor', '.env', 'bootstrap/cache', 'node_modules']
 task :environment do
 end
 task :setup => :environment do
   queue! %[mkdir -p "#{deploy_to}/#{shared_path}/bootstrap/cache"]
   queue! %[mkdir -p "#{deploy_to}/#{shared_path}/vendor"]
+  queue! %[mkdir -p "#{deploy_to}/#{shared_path}/node_modules"]
   queue! %[mkdir -p "#{deploy_to}/#{shared_path}/storage/app"]
   queue! %[mkdir -p "#{deploy_to}/#{shared_path}/storage/framework/cache"]
   queue! %[mkdir -p "#{deploy_to}/#{shared_path}/storage/framework/sessions"]
@@ -34,10 +35,17 @@ task :deploy => :environment do
   deploy do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
-    invoke :'deploy:cleanup'
+    # queue "source ~/.bash_profile"
+    # 第一次部署时要执行的
     # 第一次部署的时候，先不执行下面这一行代码。第二次之后的部署才需要执行
-    queue "source ~/.bash_profile && cd #{deploy_to}/#{current_path} && composer install"
+    queue "composer install"
+    queue "yarn install"
+    queue "yarn run production"
+    invoke :'deploy:cleanup'
+    # queue "cd #{deploy_to}/#{current_path} && php artisan key:generate"
     to :launch do
+      queue 'composer dumpautoload'
+      queue 'php artisan optimize'
       queue "rm -rf #{deploy_to}/#{current_path}/.gitignore"
       queue "rm -rf #{deploy_to}/#{current_path}/.mina_git_revision"
       queue "rm -rf #{deploy_to}/#{current_path}/README.md"
