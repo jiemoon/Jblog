@@ -13,7 +13,7 @@ const { mix } = require('laravel-mix');
 
 mix.webpackConfig({
     output: {
-        publicPath: '/'
+        publicPath: '/',
     },
     resolve:{
         alias: {
