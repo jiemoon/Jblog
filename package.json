@@ -21,6 +21,7 @@
     "normalize.css": "^5.0.0",
     "nprogress": "^0.2.0",
     "promise": "^7.1.1",
+    "simplemde-theme-base": "^0.1.2",
     "vue-router": "^2.3.0",
     "vue-simplemde": "^0.3.7"
   }
