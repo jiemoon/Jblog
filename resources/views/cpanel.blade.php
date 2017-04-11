@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/admin.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -24,6 +24,8 @@
 <body>
     <div id="app"></div>
     <!-- Scripts -->
-    <script src="{{ asset('js/admin.js') }}"></script>
+    <script src="{{ mix('js/manifest.js') }}"></script>
+    <script src="{{ mix('js/vendor.js') }}"></script>
+    <script src="{{ mix('js/admin.js') }}"></script>
 </body>
 </html>
