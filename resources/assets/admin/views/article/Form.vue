@@ -20,8 +20,7 @@
         <el-form-item label="内容" class="theme" prop="content">
             <markdown-editor :custom-theme="true" v-model="form.content" :configs="configs" ref="markdownEditor"></markdown-editor>
         </el-form-item>
-        <el-form-item style="text-align: center;">
-            <el-button type="info">存为草稿</el-button>
+        <el-form-item>
             <el-button type="primary" @click="handleSubmit" id="publish" :loading="loading_publish">立即发布</el-button>
         </el-form-item>
     </el-form>
@@ -170,8 +169,8 @@
 
     .markdown-editor .CodeMirror {
         z-index: 1001;
-        height: 200px;
-        min-height: 200px;
+        height: 160px;
+        min-height: 160px;
         padding: 0;
     }
 

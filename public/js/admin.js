@@ -29399,6 +29399,7 @@ var routes = [{
     }, {
         path: '/article/draft',
         name: '草稿箱',
+        hidden: true,
         iconCls: 'el-icon-document',
         component: __webpack_require__(179),
         meta: { requireAuth: true }
@@ -34469,7 +34470,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -37765,7 +37765,7 @@ exports.push([module.i, "\nbody {\n    margin:0px;\n    padding:0px;\n    font-f
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n.theme .editor-preview-side pre,.theme .editor-preview pre {\n    color: #abb2bf!important;\n    background: #23241f!important;\n    /*padding: 0.5em;*/\n}\n.editor-toolbar a, .editor-toolbar a.active, .editor-toolbar a:hover {\n    outline: none;\n}\n.markdown-editor .CodeMirror {\n    z-index: 1001;\n    height: 200px;\n    min-height: 200px;\n    padding: 0;\n}\n.markdown-editor .CodeMirror-lines {\n    padding: 14px;\n}\na {\n　　-webkit-tap-highlight-color: rgba(0,0,0,0);\n　　-webkit-tap-highlight-color: transparent;\n　　outline: none;\n}\n.el-select__tags {\n    width: 100%;\n}\n", ""]);
+exports.push([module.i, "\n.theme .editor-preview-side pre,.theme .editor-preview pre {\n    color: #abb2bf!important;\n    background: #23241f!important;\n    /*padding: 0.5em;*/\n}\n.editor-toolbar a, .editor-toolbar a.active, .editor-toolbar a:hover {\n    outline: none;\n}\n.markdown-editor .CodeMirror {\n    z-index: 1001;\n    height: 160px;\n    min-height: 160px;\n    padding: 0;\n}\n.markdown-editor .CodeMirror-lines {\n    padding: 14px;\n}\na {\n　　-webkit-tap-highlight-color: rgba(0,0,0,0);\n　　-webkit-tap-highlight-color: transparent;\n　　outline: none;\n}\n.el-select__tags {\n    width: 100%;\n}\n", ""]);
 
 /***/ }),
 /* 133 */
@@ -75650,15 +75650,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "form.content"
     }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    staticStyle: {
-      "text-align": "center"
-    }
-  }, [_c('el-button', {
-    attrs: {
-      "type": "info"
-    }
-  }, [_vm._v("存为草稿")]), _vm._v(" "), _c('el-button', {
+  })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
     attrs: {
       "type": "primary",
       "id": "publish",

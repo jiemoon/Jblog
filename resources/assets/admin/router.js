@@ -92,6 +92,7 @@ const routes = [
             {
                 path: '/article/draft',
                 name: '草稿箱',
+                hidden: true,
                 iconCls: 'el-icon-document',
                 component: require('./views/article/Draft'),
                 meta: { requireAuth: true },
