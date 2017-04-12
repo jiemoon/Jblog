@@ -5,7 +5,7 @@ Route::get('/', function () {
 });
 
 Route::get('/posts', function() {
-    $articles = App\Models\Article::orderBy('publish_at', 'DESC')->limit(10)->get();
+    $articles = App\Models\Article::where("status", "published")->orderBy('publish_at', 'DESC')->limit(10)->get();
     return view('web.articles.index', compact('articles'));
 });
 
