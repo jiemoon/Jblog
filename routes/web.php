@@ -18,6 +18,7 @@ Route::get('/{year}/{month}/{day}/{slug}', function($year, $month, $day, $slug) 
 
 Route::get('archives', function() {
     $articles = App\Models\Article::selectRaw('YEAR(publish_at) year, title, slug, publish_at')
+        ->where("status", "published")
         ->orderBy('publish_at', 'DESC')->get();
     $archives = [];
     foreach ($articles as $article) {
