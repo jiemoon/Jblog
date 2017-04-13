@@ -1,6 +1,6 @@
 # Jblog
 
-## ENV Require
+## Depends On
 - php 5.6+
 
 ## Install

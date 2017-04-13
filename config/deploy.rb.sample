@@ -37,15 +37,17 @@ task :deploy => :environment do
     invoke :'deploy:link_shared_paths'
     # queue "source ~/.bash_profile"
     # 第一次部署时要执行的
+    # queue "cd #{deploy_to}/#{current_path} && php artisan key:generate"
     # 第一次部署的时候，先不执行下面这一行代码。第二次之后的部署才需要执行
     queue "composer install"
     queue "yarn install"
     queue "yarn run production"
     invoke :'deploy:cleanup'
-    # queue "cd #{deploy_to}/#{current_path} && php artisan key:generate"
     to :launch do
       queue 'composer dumpautoload'
       queue 'php artisan optimize'
+      queue 'php artisan config:cache'
+      # queue 'php artisan route:cache'
       queue "rm -rf #{deploy_to}/#{current_path}/.gitignore"
       queue "rm -rf #{deploy_to}/#{current_path}/.mina_git_revision"
       queue "rm -rf #{deploy_to}/#{current_path}/README.md"
@@ -61,3 +63,4 @@ task :rollback => :environment do
   queue %[echo "----> Start to rollback"]
   queue %[if [ $(ls #{deploy_to}/releases | wc -l) -gt 1 ]; then echo "---->Relink to previos release" && unlink #{deploy_to}/current && ln -s #{deploy_to}/releases/"$(ls #{deploy_to}/releases | tail -2 | head -1)" #{deploy_to}/current && echo "Remove old releases" && rm -rf #{deploy_to}/releases/"$(ls #{deploy_to}/releases | tail -1)" && echo "$(ls #{deploy_to}/releases | tail -1)" > #{deploy_to}/last_version && echo "Done. Rollback to v$(cat #{deploy_to}/last_version)" ; else echo "No more release to rollback" ; fi]
 end
+
