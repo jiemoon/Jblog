@@ -65,13 +65,20 @@ class ArticlesController extends Controller
     {
         $article = $this->articleRepository->byId($id);
 
-        $article->update([
+        $data = [
             'title' => $request->get('title'),
             'slug' => $request->get('slug'),
             'publish_at' => $request->get('publish_at'),
             'summary' => $request->get('summary'),
             'content' => $request->get('content'),
-        ]);
+        ];
+
+        if (isset($data['publish_at'])) {
+            $data['publish_at'] = date('Y-m-d H:i:s',  strtotime($data['publish_at']));
+            $data['status'] = 'published';
+        }
+
+        $article->update($data);
 
         $tags = $this->articleRepository->normalizeTag(request('tags'));
         $article->tags()->sync($tags);
