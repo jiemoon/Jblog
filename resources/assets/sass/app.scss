@@ -512,7 +512,7 @@ a:active {
 a.nav-list-link.active,
 a.nav-list-link:hover,
 a.post-title-link:hover {
-    border-bottom: 2px solid #42b983;
+    border-bottom: 2px solid #0069D6;
 }
 
 hr {
@@ -607,7 +607,7 @@ header .nav-list-item a {
 }
 
 .home.post-list .read-more {
-    color: #42b983;
+    color: #0069D6;
 }
 
 .archive {
@@ -625,7 +625,7 @@ header .nav-list-item a {
 }
 
 .archive .post-title-link {
-    color: #42b983;
+    // color: #0069D6;
 }
 
 .archive .post-time {
@@ -664,7 +664,7 @@ header .nav-list-item a {
 .post-content h5:before,
 .post-content h6:before {
     // content: "#";
-    // color: #42b983;
+    // color: #0069D6;
     // position: absolute;
     // left: -0.7em;
     // top: -4px;
@@ -690,7 +690,7 @@ header .nav-list-item a {
 }
 
 .post-content a {
-    color: #42b983;
+    color: #0069D6;
 }
 
 .post-content blockquote {
@@ -907,7 +907,7 @@ pre .symbol,
 pre .symbol .string,
 pre .value,
 pre .regexp {
-    color: #42b983;
+    color: #0069D6;
 }
 
 pre .title {
@@ -938,7 +938,7 @@ pre .apache .tag,
 pre .apache .cbracket,
 pre .tex .command,
 pre .prompt {
-    color: #42b983;
+    color: #0069D6;
 }
 
 pre .comment,
