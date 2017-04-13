@@ -31,5 +31,6 @@
     @include('web.particals.footer')
 
     @yield('script')
+    <script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?1d51dc44b90670a5161a765dd5580a76";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
 </body>
 </html>

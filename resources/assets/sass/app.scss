@@ -663,13 +663,13 @@ header .nav-list-item a {
 .post-content h4:before,
 .post-content h5:before,
 .post-content h6:before {
-    content: "#";
-    color: #42b983;
-    position: absolute;
-    left: -0.7em;
-    top: -4px;
-    font-size: 1.2em;
-    font-weight: bold;
+    // content: "#";
+    // color: #42b983;
+    // position: absolute;
+    // left: -0.7em;
+    // top: -4px;
+    // font-size: 1.2em;
+    // font-weight: bold;
 }
 
 .post-content h4:before,
@@ -696,7 +696,8 @@ header .nav-list-item a {
 .post-content blockquote {
     margin: 2em 0;
     padding-left: 20px;
-    border-left: 4px solid #42b983;
+    border-left: 4px solid #c8cad0;
+    color: #9a9ca0;
 }
 
 .post-content img {
