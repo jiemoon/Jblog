@@ -13,8 +13,10 @@
                 <div class="post-time">
                     {{ $article->publish_date() }}
                 </div>
-                <div class="post-content">{{ $article->summary }}</div>
-                <a href="{{ $article->url() }}" class="read-more">...more</a>
+                <div class="post-content">
+                    {{ $article->summary }}
+                    <a href="{{ $article->url() }}" class="read-more">...more</a>
+                </div>
             </article>
         </li>
     @endforeach()
