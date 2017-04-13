@@ -1,5 +1,11 @@
 <?php
 
+Route::group(['domain' => 'blog.' . config('blog.domain')], function () {
+    Route::get('/', function () {
+        return redirect(url('/posts'));
+    });
+});
+
 Route::get('/', function () {
     return view('welcome');
 });

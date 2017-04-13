@@ -5,6 +5,7 @@ return [
     'description' => '',
     'author' => 'jiemoon',
     'copyright' => 'jiemoon.me',
+    'domain' => env('WEBSITE_DOMAIN', 'jiemoon.me'),
     'rss_size' => 20,
     'blog' => '/posts',
     'github' => 'https://github.com/jiemoon',
