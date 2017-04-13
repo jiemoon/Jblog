@@ -86,9 +86,8 @@ class ArticlesController extends Controller
         return response()->json(['status' => 'OK']);
     }
 
-    public function destroy(Request $request)
+    public function destroy(\App\Models\Article $article)
     {
-        $article = $this->articleRepository->byId($request->get('id'));
         $article->delete();
         return response()->json(['status' => 'OK']);
     }

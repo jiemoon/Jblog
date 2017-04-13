@@ -10173,8 +10173,8 @@ var getTagList = function getTagList(params) {
     return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(base + '/tags', { params: params });
 };
 
-var deleteArticle = function deleteArticle(params) {
-    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.delete(base + '/articles', { params: params });
+var deleteArticle = function deleteArticle(id) {
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.delete(base + '/articles/' + id);
 };
 
 var editUser = function editUser(params) {
@@ -34790,8 +34790,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function () {
                 _this4.listLoading = true;
                 //NProgress.start();
-                var para = { id: row.id };
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["c" /* deleteArticle */])(para).then(function (res) {
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__api_api__["c" /* deleteArticle */])(row.id).then(function (res) {
                     _this4.listLoading = false;
                     //NProgress.done();
                     _this4.$message({

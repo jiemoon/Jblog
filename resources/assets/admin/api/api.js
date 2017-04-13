@@ -65,7 +65,7 @@ export const uploadImage = params => { return axios.post(`${base}/images/upload`
 
 export const getTagList = params => { return axios.get(`${base}/tags`, { params: params }); };
 
-export const deleteArticle = params => { return axios.delete(`${base}/articles`, { params: params }); };
+export const deleteArticle = id => { return axios.delete(`${base}/articles/${id}`); };
 
 export const editUser = params => { return axios.get(`${base}/user/edit`, { params: params }); };
 

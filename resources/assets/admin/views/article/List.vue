@@ -178,8 +178,7 @@
                 }).then(() => {
                     this.listLoading = true;
                     //NProgress.start();
-                    let para = { id: row.id };
-                    deleteArticle(para).then((res) => {
+                    deleteArticle(row.id).then((res) => {
                         this.listLoading = false;
                         //NProgress.done();
                         this.$message({
