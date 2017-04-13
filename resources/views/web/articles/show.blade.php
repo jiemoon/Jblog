@@ -1,5 +1,9 @@
 @extends('layouts.web')
 
+@section('style')
+<link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.10.0/styles/atom-one-dark.min.css">
+@endsection
+
 @section('content')
 <div class="post">
     <article class="post-block">
@@ -14,4 +18,11 @@
         </div>
     </article>
 </div>
+@endsection
+
+@section('script')
+<script src="//cdn.bootcss.com/highlight.js/9.10.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
 @endsection

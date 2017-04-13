@@ -52,6 +52,10 @@ The config file will in /config/deploy.rb. You can refer to the `config/deploy.r
 
 After complete the mina config, we can use `mina deploy` to deploy our project.
 
+### Use Https
+
+You can use [acme.sh](https://github.com/Neilpang/acme.sh) to enable https.
+
 ## Commands
 ### Generate Model Class
 ```shell

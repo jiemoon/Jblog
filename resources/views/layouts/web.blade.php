@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    @yield('style')
 
     <link rel="alternate" type="application/rss+xml" href="{{ url('rss') }}" title="RSS Feed {{ config('blog.title') }}">
 
@@ -28,5 +29,7 @@
         @yield('content')
     </section>
     @include('web.particals.footer')
+
+    @yield('script')
 </body>
 </html>
