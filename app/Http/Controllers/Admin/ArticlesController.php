@@ -76,6 +76,8 @@ class ArticlesController extends Controller
         if (isset($data['publish_at'])) {
             $data['publish_at'] = date('Y-m-d H:i:s',  strtotime($data['publish_at']));
             $data['status'] = 'published';
+        } else {
+            $data['status'] = 'draft';
         }
 
         $article->update($data);
