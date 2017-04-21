@@ -1,6 +1,10 @@
 <footer>
     <div class="paginator"></div>
     <div class="copyright">
-        <p>© 2015 - 2017 <a href="http://blog.jiemoon.me">Jiemoon</a>, Power By Laravel 5.</p>
+        <p>
+            &copy; 2015 - 2017 ,
+            Developed By <a href="https://github.com/jiemoon">Jiemoon</a>,
+            Power By <a href="https://github.com/jiemoon/Jblog">Jblog</a>.
+        </p>
     </div>
 </footer>
